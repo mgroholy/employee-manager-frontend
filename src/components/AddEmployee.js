@@ -101,8 +101,14 @@ const AddEmployee = () => {
     if (!errorDuringFetch) {
       history.push(`/employees/${response.data.ID}`);
     }
-    console.log(response);
-    console.log(employee);
+
+  const sendRequest = async (employee) => {
+    const response = await axios
+      .post("http://localhost:8080/employees", employee)
+      .catch((error) => {
+        console.log(error.response.data.message);
+        setEmailError(error.response.data.message);
+      });
   };
 
   return (
