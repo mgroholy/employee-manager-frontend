@@ -58,7 +58,10 @@ const EmployeeDetail = () => {
           Employee could not be found by ID '{id}'.
         </Alert>
       ) : (
-        <EmployeeDetailHeader employeeName={employee.Name} />
+        <EmployeeDetailHeader
+          employeeName={employee.Name}
+          employeeId={employee.ID}
+        />
       )}
       <div>
         {employeeAttributes.map((attribute, index) => (
