@@ -27,6 +27,9 @@ const useStyles = makeStyles(() => ({
   drawerContainer: {
     overflow: "auto",
   },
+  active: {
+    backgroundColor: "green",
+  },
 }));
 
 const SideBar = () => {
@@ -44,14 +47,26 @@ const SideBar = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key={1} component={NavLink} to="/employees">
+            <ListItem
+              button
+              key={1}
+              component={NavLink}
+              to="/employees"
+              activeClassName={classes.active}
+            >
               <ListItemIcon style={{ color: "white" }}>
                 <AccountCircle />
               </ListItemIcon>
               <ListItemText primary={"Employees"} />
             </ListItem>
 
-            <ListItem button key={2} component={NavLink} to="/add-employee">
+            <ListItem
+              button
+              key={2}
+              component={NavLink}
+              to="/add-employee"
+              activeClassName={classes.active}
+            >
               <ListItemIcon style={{ color: "white" }}>
                 <Add />
               </ListItemIcon>
@@ -60,14 +75,26 @@ const SideBar = () => {
 
             <Divider style={{ backgroundColor: "white" }} />
 
-            <ListItem button key={3} component={NavLink} to="/departments">
+            <ListItem
+              button
+              key={3}
+              component={NavLink}
+              to="/departments"
+              activeClassName={classes.active}
+            >
               <ListItemIcon style={{ color: "white" }}>
                 <AccountTree />
               </ListItemIcon>
               <ListItemText primary={"Departments"} />
             </ListItem>
 
-            <ListItem button key={4} component={NavLink} to="/add-department">
+            <ListItem
+              button
+              key={4}
+              component={NavLink}
+              to="/add-department"
+              activeClassName={classes.active}
+            >
               <ListItemIcon style={{ color: "white" }}>
                 <Add />
               </ListItemIcon>
