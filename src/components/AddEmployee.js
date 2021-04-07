@@ -30,13 +30,13 @@ const AddEmployee = () => {
 
   const sendEmployee = () => {
     const employee = {
-      name: employeeName,
-      email: employeeEmail,
-      department: employeeDepartment,
-      phoneNumber: employeePhoneNumber,
-      dateOfBirth: employeeDateOfBirth,
-      clearanceLevel: employeeClearanceLevel.toUpperCase(),
-      position: employeePosition,
+      Name: employeeName,
+      Email: employeeEmail,
+      Department: employeeDepartment,
+      "Phone number": employeePhoneNumber,
+      "Date of birth": employeeDateOfBirth,
+      "Clearance level": employeeClearanceLevel.toUpperCase(),
+      Position: employeePosition,
     };
 
     let validForm = validateFormData(employee);
@@ -48,38 +48,38 @@ const AddEmployee = () => {
 
   const validateFormData = (data) => {
     let valid = true;
-    if (data.name === "") {
+    if (data.Name === "") {
       setNameError("Required field.");
       valid = false;
     }
-    if (data.email === "") {
+    if (data.Email === "") {
       setEmailError("Required field.");
       valid = false;
     } else {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      let result = re.test(String(data.email).toLowerCase());
+      let result = re.test(String(data.Email).toLowerCase());
       if (result === false) {
         valid = false;
         setEmailError("Invalid email format.");
       }
     }
-    if (data.department === "") {
+    if (data.Department === "") {
       setDepartmentError("Required field.");
       valid = false;
     }
-    if (data.dateOfBirth === "") {
+    if (data["Date of birth"] === "") {
       setDobError("Required field.");
       valid = false;
     }
-    if (data.clearanceLevel === "") {
+    if (data["Clearance level"] === "") {
       setClearanceError("Required field.");
       valid = false;
     }
-    if (data.position === "") {
+    if (data.Position === "") {
       setPositionError("Required field.");
       valid = false;
     }
-    if (data.phoneNumber === "") {
+    if (data["Phone number"] === "") {
       setPhoneError("Required field.");
       valid = false;
     }
