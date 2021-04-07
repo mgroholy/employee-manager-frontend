@@ -49,7 +49,6 @@ const SideBar = () => {
           <List>
             <ListItem
               button
-              key={1}
               component={NavLink}
               to="/employees"
               activeClassName={classes.active}
@@ -62,7 +61,6 @@ const SideBar = () => {
 
             <ListItem
               button
-              key={2}
               component={NavLink}
               to="/add-employee"
               activeClassName={classes.active}
@@ -77,7 +75,6 @@ const SideBar = () => {
 
             <ListItem
               button
-              key={3}
               component={NavLink}
               to="/departments"
               activeClassName={classes.active}
@@ -90,7 +87,6 @@ const SideBar = () => {
 
             <ListItem
               button
-              key={4}
               component={NavLink}
               to="/add-department"
               activeClassName={classes.active}
