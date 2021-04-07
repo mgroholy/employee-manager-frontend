@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
+import EmployeeFilter from "./EmployeeFilter";
 
 const EMPLOYEES_REST_API_URL = "http://localhost:8080/";
 const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
@@ -58,6 +59,14 @@ const EmployeeList = () => {
     setDepartments(response.data);
   };
 
+  const filterByDepartment = async (department) => {
+    const response = await axios.get(
+      `${EMPLOYEES_REST_API_URL}/employees?department=${department}`
+    );
+    console.log(response);
+    setEmployees(response.data);
+  };
+
   useEffect(() => {
     fetchDepartments();
     fetchEmployees();
@@ -70,22 +79,11 @@ const EmployeeList = () => {
           Employees List
         </Typography>
       </Box>
-      <Box marginBottom={3}>
-        <Paper elevation={2}>
-          <Box padding={2}>
-            <FormControl className={classes.formControl}>
-              <InputLabel id="department-select-label">Department</InputLabel>
-              <Select labelId="department-select-label" id="department-select">
-                {departments.map((department) => (
-                  <MenuItem key={department.id} value={department.name}>
-                    {department.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </Paper>
-      </Box>
+      <EmployeeFilter
+        departments={departments}
+        formControlClass={classes.formControl}
+        filterByDepartment={filterByDepartment}
+      />
 
       <TableContainer component={Paper} elevation={2}>
         <Table>
