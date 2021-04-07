@@ -1,8 +1,12 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Update from "@material-ui/icons/Update";
 import Delete from "@material-ui/icons/Delete";
+import axios from "axios";
+
+const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -12,6 +16,22 @@ const useStyles = makeStyles((theme) => ({
 
 const EmployeeDetailHeader = (props) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const deleteEmployee = async () => {
+    const url = EMPLOYEE_REST_API_URL + props.employeeId;
+    try {
+      await axios.delete(url);
+      alert(
+        "Employee with ID " +
+          props.employeeId +
+          " has been successfully deleted!"
+      );
+      history.push("/employees");
+    } catch (error) {
+      alert("Employee with ID " + props.employeeId + " could not be found!");
+    }
+  };
 
   return (
     <div
@@ -42,6 +62,7 @@ const EmployeeDetailHeader = (props) => {
         size="small"
         className={classes.button}
         startIcon={<Delete />}
+        onClick={deleteEmployee}
       >
         Delete
       </Button>
