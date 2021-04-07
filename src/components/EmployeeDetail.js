@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
+import EmployeeDetailHeader from "./EmployeeDetailHeader";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -45,7 +46,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className={classes.root}>
-      <h1>{employee.Name}</h1>
+      <EmployeeDetailHeader employeeName={employee.Name} />
       <div>
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
