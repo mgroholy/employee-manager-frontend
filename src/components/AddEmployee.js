@@ -102,145 +102,146 @@ const AddEmployee = () => {
       history.push(`/employees/${response.data.ID}`);
     }
 
-  const sendRequest = async (employee) => {
-    const response = await axios
-      .post("http://localhost:8080/employees", employee)
-      .catch((error) => {
-        console.log(error.response.data.message);
-        setEmailError(error.response.data.message);
-      });
+    const sendRequest = async (employee) => {
+      const response = await axios
+        .post("http://localhost:8080/employees", employee)
+        .catch((error) => {
+          console.log(error.response.data.message);
+          setEmailError(error.response.data.message);
+        });
+    };
+
+    return (
+      <Container>
+        <Paper elevation={2}>
+          <Box p={5}>
+            <Typography variant="h3">Add employee</Typography>
+
+            <FormControl fullWidth={true}>
+              <form>
+                <Box paddingTop={3}>
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Employee name:"
+                    variant="outlined"
+                    required={true}
+                    onChange={(event) => {
+                      setNameError("");
+                      setName(event.target.value);
+                    }}
+                    helperText={nameError}
+                    error={nameError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Email:"
+                    variant="outlined"
+                    required={true}
+                    type="email"
+                    onChange={(event) => {
+                      setEmailError("");
+                      setEmail(event.target.value);
+                    }}
+                    helperText={emailError}
+                    error={emailError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Date of birth:"
+                    variant="outlined"
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                    required={true}
+                    onChange={(event) => {
+                      setDobError("");
+                      setDateOfBirth(event.target.value);
+                    }}
+                    helperText={dobError}
+                    error={dobError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Department:"
+                    variant="outlined"
+                    required={true}
+                    onChange={(event) => {
+                      setDepartmentError("");
+                      setDepartment(event.target.value);
+                    }}
+                    helperText={departmentError}
+                    error={departmentError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Phone number:"
+                    variant="outlined"
+                    required={true}
+                    type="tel"
+                    onChange={(event) => {
+                      setPhoneError("");
+                      setPhoneNumber(event.target.value);
+                    }}
+                    helperText={phoneError}
+                    error={phoneError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Clearance Level:"
+                    variant="outlined"
+                    required={true}
+                    onChange={(event) => {
+                      setClearanceError("");
+                      setClearanceLevel(event.target.value);
+                    }}
+                    helperText={clearanceError}
+                    error={clearanceError !== ""}
+                  />
+                  <TextField
+                    margin={"normal"}
+                    fullWidth={true}
+                    id="outlined-basic"
+                    label="Position:"
+                    variant="outlined"
+                    required={true}
+                    onChange={(event) => {
+                      setPositionError("");
+                      setPosition(event.target.value);
+                    }}
+                    helperText={positionError}
+                    error={positionError !== ""}
+                  />
+                  <Button
+                    variant="outlined"
+                    margin={"normal"}
+                    color="secondary"
+                    type="submit"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      sendEmployee();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </form>
+            </FormControl>
+          </Box>
+        </Paper>
+      </Container>
+    );
   };
-
-  return (
-    <Container>
-      <Paper elevation={2}>
-        <Box p={5}>
-          <Typography variant="h3">Add employee</Typography>
-
-          <FormControl fullWidth={true}>
-            <form>
-              <Box paddingTop={3}>
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Employee name:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setNameError("");
-                    setName(event.target.value);
-                  }}
-                  helperText={nameError}
-                  error={nameError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Email:"
-                  variant="outlined"
-                  required={true}
-                  type="email"
-                  onChange={(event) => {
-                    setEmailError("");
-                    setEmail(event.target.value);
-                  }}
-                  helperText={emailError}
-                  error={emailError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Date of birth:"
-                  variant="outlined"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  required={true}
-                  onChange={(event) => {
-                    setDobError("");
-                    setDateOfBirth(event.target.value);
-                  }}
-                  helperText={dobError}
-                  error={dobError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Department:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setDepartmentError("");
-                    setDepartment(event.target.value);
-                  }}
-                  helperText={departmentError}
-                  error={departmentError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Phone number:"
-                  variant="outlined"
-                  required={true}
-                  type="tel"
-                  onChange={(event) => {
-                    setPhoneError("");
-                    setPhoneNumber(event.target.value);
-                  }}
-                  helperText={phoneError}
-                  error={phoneError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Clearance Level:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setClearanceError("");
-                    setClearanceLevel(event.target.value);
-                  }}
-                  helperText={clearanceError}
-                  error={clearanceError !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Position:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setPositionError("");
-                    setPosition(event.target.value);
-                  }}
-                  helperText={positionError}
-                  error={positionError !== ""}
-                />
-                <Button
-                  variant="outlined"
-                  margin={"normal"}
-                  color="secondary"
-                  type="submit"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    sendEmployee();
-                  }}
-                >
-                  Submit
-                </Button>
-              </Box>
-            </form>
-          </FormControl>
-        </Box>
-      </Paper>
-    </Container>
-  );
 };
 
 export default AddEmployee;
