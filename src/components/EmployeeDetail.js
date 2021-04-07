@@ -7,6 +7,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
 import Alert from "@material-ui/lab/Alert";
+import { AccordionDetails, TextField } from "@material-ui/core";
+import { Update } from "@material-ui/icons";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -66,12 +68,23 @@ const EmployeeDetail = () => {
       <div>
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
-            <AccordionSummary>
+            <AccordionSummary expandIcon={index !== 0 ? <Update /> : <></>}>
               <Typography className={classes.heading}>{attribute}</Typography>
-              <Typography className={classes.secondaryHeading}>
+              <Typography className={classes.secondaryHeading + " changeable"}>
                 {employee[attribute]}
               </Typography>
             </AccordionSummary>
+            {index !== 0 ? (
+              <AccordionDetails>
+                <TextField
+                  label={"New " + attribute}
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
           </Accordion>
         ))}
       </div>
