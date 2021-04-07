@@ -11,6 +11,7 @@ import { spacing } from "@material-ui/system";
 import { sizing } from "@material-ui/system";
 import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const AddEmployee = () => {
   const [employeeName, setName] = useState("");
@@ -86,6 +87,21 @@ const AddEmployee = () => {
     return valid;
   };
 
+  const history = useHistory();
+
+  const sendRequest = async (employee) => {
+    let errorDuringFetch = false;
+    const response = await axios
+      .post("http://localhost:8080/employees", employee)
+      .catch((error) => {
+        errorDuringFetch = true;
+        console.log(error.response.data.message);
+        setEmailError(error.response.data.message);
+      });
+    if (!errorDuringFetch) {
+      history.push(`/employees/${response.data.ID}`);
+    }
+
   const sendRequest = async (employee) => {
     const response = await axios
       .post("http://localhost:8080/employees", employee)
@@ -93,8 +109,6 @@ const AddEmployee = () => {
         console.log(error.response.data.message);
         setEmailError(error.response.data.message);
       });
-    console.log(response);
-    console.log(employee);
   };
 
   return (
