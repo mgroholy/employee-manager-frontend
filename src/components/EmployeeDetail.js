@@ -6,6 +6,7 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
+import Alert from "@material-ui/lab/Alert";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -28,6 +29,7 @@ const EmployeeDetail = () => {
   const classes = useStyles();
   const { id } = useParams();
   const [employee, setEmployee] = useState({});
+  const [isError, setIsError] = useState(false);
 
   let employeeAttributes = Object.keys(employee);
   const index = employeeAttributes.indexOf("Name");
@@ -37,8 +39,13 @@ const EmployeeDetail = () => {
 
   useEffect(() => {
     const fetchEmployee = async () => {
-      const response = await axios.get(EMPLOYEE_REST_API_URL + id);
-      setEmployee(response.data);
+      setIsError(false);
+      try {
+        const response = await axios.get(EMPLOYEE_REST_API_URL + id);
+        setEmployee(response.data);
+      } catch (error) {
+        setIsError(true);
+      }
     };
 
     fetchEmployee();
@@ -46,7 +53,13 @@ const EmployeeDetail = () => {
 
   return (
     <div className={classes.root}>
-      <EmployeeDetailHeader employeeName={employee.Name} />
+      {isError ? (
+        <Alert severity="error">
+          Employee could not be found by ID '{id}'.
+        </Alert>
+      ) : (
+        <EmployeeDetailHeader employeeName={employee.Name} />
+      )}
       <div>
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
