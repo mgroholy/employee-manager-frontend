@@ -5,6 +5,8 @@ import TopBar from "./components/bars/TopBar";
 import SideBar from "./components/bars/SideBar";
 import EmployeeList from "./components/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Fragment } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,15 +22,21 @@ function App() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <TopBar />
-      <SideBar />
-      <main className={classes.content}>
-        <Toolbar />
-        <EmployeeList />
-      </main>
-    </div>
+    <Router>
+      <div className={classes.root}>
+        <CssBaseline />
+        <TopBar />
+        <SideBar />
+        <main className={classes.content}>
+          <Toolbar />
+          <Route exact path="/" component={EmployeeList} />
+          <Route exact path="/employees" component={EmployeeList} />
+          <Route exact path="/add-employee" component={Fragment} />
+          <Route exact path="/departments" component={Fragment} />
+          <Route exact path="/add-department" component={Fragment} />
+        </main>
+      </div>
+    </Router>
   );
 }
 

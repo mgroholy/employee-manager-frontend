@@ -10,6 +10,7 @@ import Add from "@material-ui/icons/Add";
 import AccountTree from "@material-ui/icons/AccountTree";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Divider from "@material-ui/core/Divider";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 250;
 
@@ -57,25 +58,35 @@ const SideBar = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            {["Employees", "Add new employee"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon style={{ color: "white" }}>
-                  {index === 0 ? <AccountCircle /> : <Add />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider style={{ backgroundColor: "white" }} />
-          <List>
-            {["Departments", "Add new department"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon style={{ color: "white" }}>
-                  {index === 0 ? <AccountTree /> : <Add />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem button key={1} component={NavLink} to="/employees">
+              <ListItemIcon style={{ color: "white" }}>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText primary={"Employees"} />
+            </ListItem>
+
+            <ListItem button key={2} component={NavLink} to="/add-employee">
+              <ListItemIcon style={{ color: "white" }}>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary={"Add new employee"} />
+            </ListItem>
+
+            <Divider style={{ backgroundColor: "white" }} />
+
+            <ListItem button key={3} component={NavLink} to="/departments">
+              <ListItemIcon style={{ color: "white" }}>
+                <AccountTree />
+              </ListItemIcon>
+              <ListItemText primary={"Departments"} />
+            </ListItem>
+
+            <ListItem button key={4} component={NavLink} to="/add-department">
+              <ListItemIcon style={{ color: "white" }}>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary={"Add new department"} />
+            </ListItem>
           </List>
         </div>
       </Drawer>
