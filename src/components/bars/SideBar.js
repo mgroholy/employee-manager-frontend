@@ -10,17 +10,11 @@ import Add from "@material-ui/icons/Add";
 import AccountTree from "@material-ui/icons/AccountTree";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Divider from "@material-ui/core/Divider";
+import { NavLink } from "react-router-dom";
 
 const drawerWidth = 250;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: "green",
-  },
+const useStyles = makeStyles(() => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -33,12 +27,8 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
     overflow: "auto",
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  itemIcon: {
-    color: "white",
+  active: {
+    backgroundColor: "green",
   },
 }));
 
@@ -57,25 +47,55 @@ const SideBar = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            {["Employees", "Add new employee"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon style={{ color: "white" }}>
-                  {index === 0 ? <AccountCircle /> : <Add />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider style={{ backgroundColor: "white" }} />
-          <List>
-            {["Departments", "Add new department"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon style={{ color: "white" }}>
-                  {index === 0 ? <AccountTree /> : <Add />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+            <ListItem
+              button
+              component={NavLink}
+              to="/employees"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText primary={"Employees"} />
+            </ListItem>
+
+            <ListItem
+              button
+              component={NavLink}
+              to="/add-employee"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary={"Add new employee"} />
+            </ListItem>
+
+            <Divider style={{ backgroundColor: "white" }} />
+
+            <ListItem
+              button
+              component={NavLink}
+              to="/departments"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <AccountTree />
+              </ListItemIcon>
+              <ListItemText primary={"Departments"} />
+            </ListItem>
+
+            <ListItem
+              button
+              component={NavLink}
+              to="/add-department"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <Add />
+              </ListItemIcon>
+              <ListItemText primary={"Add new department"} />
+            </ListItem>
           </List>
         </div>
       </Drawer>
