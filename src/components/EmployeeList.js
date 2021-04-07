@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 
 const EMPLOYEES_REST_API_URL = "http://localhost:8080/";
 
@@ -16,29 +27,31 @@ const EmployeeList = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Employees List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Employee Name</th>
-            <th>Email Address</th>
-            <th>Department</th>
-            <th>Position</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.name}</td>
-              <td>{employee.email}</td>
-              <td>{employee.department}</td>
-              <td>{employee.position}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Container>
+      <TableContainer component={Paper} elevation={2}>
+        <Typography variant="h3">Employees List</Typography>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Employee Name</TableCell>
+              <TableCell>Email Address</TableCell>
+              <TableCell>Department</TableCell>
+              <TableCell>Position</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {employees.map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell>{employee.name}</TableCell>
+                <TableCell>{employee.email}</TableCell>
+                <TableCell>{employee.department}</TableCell>
+                <TableCell>{employee.position}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 
