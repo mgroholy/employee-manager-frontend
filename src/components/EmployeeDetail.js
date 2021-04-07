@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Typography from "@material-ui/core/Typography";
-import EmployeeDetailHeader from "./EmployeeDetailHeader";
 import Alert from "@material-ui/lab/Alert";
-import { AccordionDetails, TextField } from "@material-ui/core";
 import { Update } from "@material-ui/icons";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  TextField,
+} from "@material-ui/core";
+import EmployeeDetailHeader from "./EmployeeDetailHeader";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
