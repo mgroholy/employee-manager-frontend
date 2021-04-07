@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
+  AppBar,
   Box,
   Container,
+  FormControl,
   Paper,
   Table,
   TableBody,
@@ -11,11 +13,15 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
 
 const EMPLOYEES_REST_API_URL = "http://localhost:8080/";
+const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -28,21 +34,32 @@ const useStyles = makeStyles(() => ({
     fontSize: "1.2rem",
     fontWeight: "bold",
   },
+  formControl: {
+    minWidth: "150px",
+  },
 }));
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   const classes = useStyles();
 
   const history = useHistory();
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      const response = await axios.get(EMPLOYEES_REST_API_URL);
-      setEmployees(response.data);
-    };
+  const fetchEmployees = async () => {
+    const response = await axios.get(EMPLOYEES_REST_API_URL);
+    setEmployees(response.data);
+  };
 
+  const fetchDepartments = async () => {
+    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    console.log(response);
+    setDepartments(response.data);
+  };
+
+  useEffect(() => {
+    fetchDepartments();
     fetchEmployees();
   }, []);
 
@@ -53,6 +70,23 @@ const EmployeeList = () => {
           Employees List
         </Typography>
       </Box>
+      <Box marginBottom={3}>
+        <Paper elevation={2}>
+          <Box padding={2}>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="department-select-label">Department</InputLabel>
+              <Select labelId="department-select-label" id="department-select">
+                {departments.map((department) => (
+                  <MenuItem key={department.id} value={department.name}>
+                    {department.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper>
+      </Box>
+
       <TableContainer component={Paper} elevation={2}>
         <Table>
           <TableHead>
@@ -76,7 +110,7 @@ const EmployeeList = () => {
                 <TableCell>{employee.Name}</TableCell>
 
                 <TableCell>{employee.Email}</TableCell>
-                <TableCell>{employee.Department}</TableCell>
+                <TableCell>{employee.Department.name}</TableCell>
                 <TableCell>{employee.Position}</TableCell>
               </TableRow>
             ))}
