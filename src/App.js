@@ -7,6 +7,7 @@ import EmployeeList from "./components/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Fragment } from "react";
+import EmployeeDetail from "./components/EmployeeDetail";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,7 @@ function App() {
           <Toolbar />
           <Route exact path="/" component={EmployeeList} />
           <Route exact path="/employees" component={EmployeeList} />
+          <Route exact path="/employees/:id" component={EmployeeDetail} />
           <Route exact path="/add-employee" component={Fragment} />
           <Route exact path="/departments" component={Fragment} />
           <Route exact path="/add-department" component={Fragment} />

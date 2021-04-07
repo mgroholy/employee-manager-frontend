@@ -41,11 +41,11 @@ const EmployeeList = () => {
           </TableHead>
           <TableBody>
             {employees.map((employee) => (
-              <TableRow key={employee.id}>
-                <TableCell>{employee.name}</TableCell>
-                <TableCell>{employee.email}</TableCell>
-                <TableCell>{employee.department}</TableCell>
-                <TableCell>{employee.position}</TableCell>
+              <TableRow key={employee.Id}>
+                <TableCell>{employee.Name}</TableCell>
+                <TableCell>{employee.Email}</TableCell>
+                <TableCell>{employee.Department}</TableCell>
+                <TableCell>{employee.Position}</TableCell>
               </TableRow>
             ))}
           </TableBody>
