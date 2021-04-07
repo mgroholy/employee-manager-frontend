@@ -29,11 +29,11 @@ const EmployeeList = () => {
         </thead>
         <tbody>
           {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td>{employee.name}</td>
-              <td>{employee.email}</td>
-              <td>{employee.department}</td>
-              <td>{employee.position}</td>
+            <tr key={employee.ID}>
+              <td>{employee.Name}</td>
+              <td>{employee.Email}</td>
+              <td>{employee.Department}</td>
+              <td>{employee.Position}</td>
             </tr>
           ))}
         </tbody>
