@@ -69,7 +69,9 @@ const EmployeeDetail = () => {
             <AccordionSummary>
               <Typography className={classes.heading}>{attribute}</Typography>
               <Typography className={classes.secondaryHeading}>
-                {employee[attribute]}
+                {attribute === "Department"
+                  ? employee[attribute].name
+                  : employee[attribute]}
               </Typography>
             </AccordionSummary>
           </Accordion>
