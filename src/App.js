@@ -1,6 +1,8 @@
 import "./App.css";
 import { makeStyles } from "@material-ui/core/styles";
-import Bar from "./components/bars/Bar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TopBar from "./components/bars/TopBar";
+import SideBar from "./components/bars/SideBar";
 import EmployeeList from "./components/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
 
@@ -19,7 +21,9 @@ function App() {
 
   return (
     <div className={classes.root}>
-      <Bar />
+      <CssBaseline />
+      <TopBar />
+      <SideBar />
       <main className={classes.content}>
         <Toolbar />
         <EmployeeList />
