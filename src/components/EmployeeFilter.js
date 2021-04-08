@@ -27,12 +27,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const EmployeeFilter = ({ departments, formControlClass, filter }) => {
+const EmployeeFilter = ({
+  departments,
+  formControlClass,
+  filter,
+  inputError,
+  setInputError,
+}) => {
   const classes = useStyles();
 
   const [radioOption, setRadioOption] = useState("Name");
   const [userInput, setUserInput] = useState("");
-  const [inputError, setInputError] = useState("");
 
   const filterByUserInput = () => {
     console.log(filter);
