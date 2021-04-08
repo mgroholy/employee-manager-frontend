@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
-
+  const [userInput, setUserInput] = useState("");
   const [inputError, setInputError] = useState("");
 
   const classes = useStyles();
@@ -89,6 +89,8 @@ const EmployeeList = () => {
         filter={filterByInput}
         inputError={inputError}
         setInputError={setInputError}
+        userInput={userInput}
+        setUserInput={setUserInput}
       />
 
       <TableContainer component={Paper} elevation={2}>

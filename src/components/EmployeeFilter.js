@@ -21,10 +21,6 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "space-around",
   },
-  userInputForm: {
-    display: "flex",
-    flexDirection: "row",
-  },
 }));
 
 const EmployeeFilter = ({
@@ -33,11 +29,12 @@ const EmployeeFilter = ({
   filter,
   inputError,
   setInputError,
+  userInput,
+  setUserInput,
 }) => {
   const classes = useStyles();
 
   const [radioOption, setRadioOption] = useState("Name");
-  const [userInput, setUserInput] = useState("");
 
   const filterByUserInput = () => {
     console.log(filter);
@@ -56,13 +53,15 @@ const EmployeeFilter = ({
     <Box marginBottom={3}>
       <Paper elevation={2}>
         <Box padding={2} className={classes.formContainer}>
-          <FormControl className={formControlClass}>
+          <FormControl className={formControlClass} variant={"outlined"}>
             <InputLabel id="department-select-label">Department</InputLabel>
             <Select
               labelId="department-select-label"
               id="department-select"
               defaultValue={"all"}
               onChange={(event) => {
+                setUserInput("");
+                setInputError("");
                 const filterParam = {
                   type: "department",
                   value: event.target.value,
@@ -80,7 +79,8 @@ const EmployeeFilter = ({
               ))}
             </Select>
           </FormControl>
-          <FormControl component="fieldset" className={classes.userInputForm}>
+
+          <FormControl component="fieldset">
             <FormLabel component="legend">Type</FormLabel>
             <RadioGroup
               row
@@ -111,29 +111,30 @@ const EmployeeFilter = ({
                 labelPlacement="bottom"
               />
             </RadioGroup>
-            <TextField
-              margin={"normal"}
-              id="outlined-basic"
-              label={radioOption}
-              variant="outlined"
-              helperText={inputError}
-              error={inputError !== ""}
-              onChange={(event) => {
-                setInputError("");
-                setUserInput(event.target.value);
-              }}
-            />
-            <Button
-              variant="outlined"
-              margin={"normal"}
-              color="secondary"
-              onClick={() => {
-                filterByUserInput();
-              }}
-            >
-              Filter
-            </Button>
           </FormControl>
+          <TextField
+            margin={"normal"}
+            id="outlined-basic"
+            label={radioOption}
+            variant="outlined"
+            value={userInput}
+            helperText={inputError}
+            error={inputError !== ""}
+            onChange={(event) => {
+              setInputError("");
+              setUserInput(event.target.value);
+            }}
+          />
+          <Button
+            variant="outlined"
+            margin={"normal"}
+            color="secondary"
+            onClick={() => {
+              filterByUserInput();
+            }}
+          >
+            Filter
+          </Button>
         </Box>
       </Paper>
     </Box>
