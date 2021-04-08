@@ -28,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  error: {
+    color: "red",
+    marginLeft: "15px",
+  },
 }));
 
 const EmployeeDetail = () => {
@@ -36,6 +40,7 @@ const EmployeeDetail = () => {
   const [employee, setEmployee] = useState({});
   const [isError, setIsError] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({});
 
   let employeeAttributes = Object.keys(employee);
   const index = employeeAttributes.indexOf("Name");
@@ -63,7 +68,19 @@ const EmployeeDetail = () => {
       const input = e.target.value;
       const url = EMPLOYEE_REST_API_URL + id + "/update";
       employee[attribute] = input;
-      await axios.put(url, employee);
+      const response = await axios
+        .put(url, employee)
+        .catch((error) => error.response);
+
+      if (response.status === 400) {
+        if (response.data === "")
+          setErrorMessage({ [attribute]: "Invalid input." });
+        else {
+          const message = response.data.errors[0].defaultMessage;
+          setErrorMessage({ [attribute]: message });
+        }
+      } else setErrorMessage({});
+
       setHasUpdate(!hasUpdate);
     }
   };
@@ -100,6 +117,14 @@ const EmployeeDetail = () => {
                   onKeyDown={(e) => updateEmployee(attribute, e)}
                 />
               </AccordionDetails>
+            ) : (
+              <></>
+            )}
+            {errorMessage !== {} &&
+            Object.keys(errorMessage)[0] === attribute ? (
+              <Typography className={classes.error}>
+                {errorMessage[attribute]}
+              </Typography>
             ) : (
               <></>
             )}
