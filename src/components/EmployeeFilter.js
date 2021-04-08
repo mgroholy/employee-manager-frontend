@@ -5,18 +5,38 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  TextField,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormLabel,
+  Button,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
 
-const EmployeeFilter = ({
-  departments,
-  formControlClass,
-  filterByDepartment,
-}) => {
+const useStyles = makeStyles(() => ({
+  formContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  userInputForm: {
+    display: "flex",
+    flexDirection: "row",
+  },
+}));
+
+const EmployeeFilter = ({ departments, formControlClass, filter }) => {
+  const classes = useStyles();
+
+  const [radioOption, setRadioOption] = useState("Name");
+  const [userInput, setUserInput] = useState("");
+
   return (
     <Box marginBottom={3}>
       <Paper elevation={2}>
-        <Box padding={2}>
+        <Box padding={2} className={classes.formContainer}>
           <FormControl className={formControlClass}>
             <InputLabel id="department-select-label">Department</InputLabel>
             <Select
@@ -24,7 +44,11 @@ const EmployeeFilter = ({
               id="department-select"
               defaultValue={"all"}
               onChange={(event) => {
-                filterByDepartment(event.target.value);
+                const filterParam = {
+                  type: "department",
+                  value: event.target.value,
+                };
+                filter(filterParam);
               }}
             >
               <MenuItem key={"all"} value={"all"} selected={true}>
@@ -36,6 +60,63 @@ const EmployeeFilter = ({
                 </MenuItem>
               ))}
             </Select>
+          </FormControl>
+          <FormControl component="fieldset" className={classes.userInputForm}>
+            <FormLabel component="legend">Type</FormLabel>
+            <RadioGroup
+              row
+              aria-label="type"
+              name="type"
+              defaultValue="Name"
+              onChange={(event) => {
+                setRadioOption(event.target.value);
+              }}
+            >
+              <FormControlLabel
+                value="Name"
+                control={<Radio color="primary" />}
+                label="Name"
+                selected={true}
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="Email"
+                control={<Radio color="primary" />}
+                label="Email"
+                labelPlacement="bottom"
+              />
+              <FormControlLabel
+                value="Id"
+                control={<Radio color="primary" />}
+                label="Id"
+                labelPlacement="bottom"
+              />
+            </RadioGroup>
+            <TextField
+              margin={"normal"}
+              // fullWidth={true}
+              id="outlined-basic"
+              label={radioOption}
+              variant="outlined"
+              onChange={(event) => {
+                setUserInput(event.target.value);
+              }}
+            />
+            <Button
+              variant="outlined"
+              margin={"normal"}
+              color="secondary"
+              onClick={() => {
+                console.log(filter);
+                const filterParams = {
+                  type: radioOption.toLowerCase(),
+                  value: userInput,
+                };
+                filter(filterParams);
+              }}
+            >
+              Filter
+            </Button>
           </FormControl>
         </Box>
       </Paper>
