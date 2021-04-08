@@ -56,6 +56,16 @@ const EmployeeDetail = () => {
     fetchEmployee();
   }, [id]);
 
+  const updateEmployee = async (attribute, e) => {
+    const isEnterPressed = e.keyCode === 13;
+    if (isEnterPressed) {
+      const input = e.target.value;
+      const url = EMPLOYEE_REST_API_URL + id + "/update";
+      employee[attribute] = input;
+      await axios.put(url, employee);
+    }
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -83,6 +93,7 @@ const EmployeeDetail = () => {
                   label={"New " + attribute}
                   variant="outlined"
                   InputLabelProps={{ shrink: true }}
+                  onKeyDown={(e) => updateEmployee(attribute, e)}
                 />
               </AccordionDetails>
             ) : (
