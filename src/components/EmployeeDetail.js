@@ -106,7 +106,9 @@ const EmployeeDetail = () => {
                 {attribute}
               </Typography>
               <Typography className={classes.attributeValue}>
-                {employee[attribute]}
+                {attribute === "Department"
+                  ? employee[attribute].name
+                  : employee[attribute]}
               </Typography>
             </AccordionSummary>
             {index !== 0 ? (

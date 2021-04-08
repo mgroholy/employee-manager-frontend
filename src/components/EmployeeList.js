@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
+  AppBar,
   Box,
   Container,
+  FormControl,
   Paper,
   Table,
   TableBody,
@@ -11,11 +13,16 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Select,
+  MenuItem,
+  InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
+import EmployeeFilter from "./EmployeeFilter";
 
 const EMPLOYEES_REST_API_URL = "http://localhost:8080/";
+const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -28,31 +35,64 @@ const useStyles = makeStyles(() => ({
     fontSize: "1.2rem",
     fontWeight: "bold",
   },
+  formControl: {
+    minWidth: "150px",
+  },
+  tableRow: {
+    cursor: "pointer",
+  },
 }));
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [inputError, setInputError] = useState("");
 
   const classes = useStyles();
 
   const history = useHistory();
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      const response = await axios.get(EMPLOYEES_REST_API_URL);
-      setEmployees(response.data);
-    };
+  const fetchEmployees = async () => {
+    const response = await axios.get(EMPLOYEES_REST_API_URL);
+    setEmployees(response.data);
+  };
 
+  const fetchDepartments = async () => {
+    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    console.log(response);
+    setDepartments(response.data);
+  };
+
+  const filterByInput = async (input) => {
+    const url = `${EMPLOYEES_REST_API_URL}/employees?${input.type}=${input.value}`;
+    let errorDuringFetch = false;
+    const response = await axios.get(url).catch((error) => {
+      errorDuringFetch = true;
+      setInputError(error.response.data.message);
+    });
+    if (!errorDuringFetch) {
+      setEmployees(response.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchDepartments();
     fetchEmployees();
   }, []);
 
   return (
     <Container>
-      <Box padding={5}>
-        <Typography variant="h3" align="center">
-          Employees List
-        </Typography>
-      </Box>
+      <EmployeeFilter
+        departments={departments}
+        formControlClass={classes.formControl}
+        filter={filterByInput}
+        inputError={inputError}
+        setInputError={setInputError}
+        userInput={userInput}
+        setUserInput={setUserInput}
+      />
+
       <TableContainer component={Paper} elevation={2}>
         <Table>
           <TableHead>
@@ -72,11 +112,12 @@ const EmployeeList = () => {
               <TableRow
                 key={employee.ID}
                 onClick={() => history.push(`/employees/${employee.ID}`)}
+                className={classes.tableRow}
               >
                 <TableCell>{employee.Name}</TableCell>
 
                 <TableCell>{employee.Email}</TableCell>
-                <TableCell>{employee.Department}</TableCell>
+                <TableCell>{employee.Department.name}</TableCell>
                 <TableCell>{employee.Position}</TableCell>
               </TableRow>
             ))}
