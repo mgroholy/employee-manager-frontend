@@ -12,7 +12,8 @@ const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: "80%",
+    margin: "auto",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
