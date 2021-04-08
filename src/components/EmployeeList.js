@@ -47,6 +47,8 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
 
+  const [inputError, setInputError] = useState("");
+
   const classes = useStyles();
 
   const history = useHistory();
@@ -64,9 +66,14 @@ const EmployeeList = () => {
 
   const filterByInput = async (input) => {
     const url = `${EMPLOYEES_REST_API_URL}/employees?${input.type}=${input.value}`;
-    const response = await axios.get(url);
-    console.log(response);
-    setEmployees(response.data);
+    let errorDuringFetch = false;
+    const response = await axios.get(url).catch((error) => {
+      errorDuringFetch = true;
+      setInputError(error.response.data.message);
+    });
+    if (!errorDuringFetch) {
+      setEmployees(response.data);
+    }
   };
 
   useEffect(() => {
@@ -80,6 +87,8 @@ const EmployeeList = () => {
         departments={departments}
         formControlClass={classes.formControl}
         filter={filterByInput}
+        inputError={inputError}
+        setInputError={setInputError}
       />
 
       <TableContainer component={Paper} elevation={2}>
