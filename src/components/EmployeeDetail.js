@@ -35,6 +35,7 @@ const EmployeeDetail = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState({});
   const [isError, setIsError] = useState(false);
+  const [hasUpdate, setHasUpdate] = useState(false);
 
   let employeeAttributes = Object.keys(employee);
   const index = employeeAttributes.indexOf("Name");
@@ -54,7 +55,7 @@ const EmployeeDetail = () => {
     };
 
     fetchEmployee();
-  }, [id]);
+  }, [id, hasUpdate]);
 
   const updateEmployee = async (attribute, e) => {
     const isEnterPressed = e.keyCode === 13;
@@ -63,6 +64,7 @@ const EmployeeDetail = () => {
       const url = EMPLOYEE_REST_API_URL + id + "/update";
       employee[attribute] = input;
       await axios.put(url, employee);
+      setHasUpdate(!hasUpdate);
     }
   };
 
