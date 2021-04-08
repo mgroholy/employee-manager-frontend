@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
-  heading: {
+  attributeName: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
     flexShrink: 0,
   },
-  secondaryHeading: {
+  attributeValue: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
@@ -82,8 +82,10 @@ const EmployeeDetail = () => {
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
             <AccordionSummary expandIcon={index !== 0 ? <Update /> : <></>}>
-              <Typography className={classes.heading}>{attribute}</Typography>
-              <Typography className={classes.secondaryHeading + " changeable"}>
+              <Typography className={classes.attributeName}>
+                {attribute}
+              </Typography>
+              <Typography className={classes.attributeValue}>
                 {employee[attribute]}
               </Typography>
             </AccordionSummary>
