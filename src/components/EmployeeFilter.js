@@ -32,6 +32,20 @@ const EmployeeFilter = ({ departments, formControlClass, filter }) => {
 
   const [radioOption, setRadioOption] = useState("Name");
   const [userInput, setUserInput] = useState("");
+  const [inputError, setInputError] = useState("");
+
+  const filterByUserInput = () => {
+    console.log(filter);
+    if (userInput !== "") {
+      const filterParams = {
+        type: radioOption.toLowerCase(),
+        value: userInput,
+      };
+      filter(filterParams);
+    } else {
+      setInputError("Required field.");
+    }
+  };
 
   return (
     <Box marginBottom={3}>
@@ -94,11 +108,13 @@ const EmployeeFilter = ({ departments, formControlClass, filter }) => {
             </RadioGroup>
             <TextField
               margin={"normal"}
-              // fullWidth={true}
               id="outlined-basic"
               label={radioOption}
               variant="outlined"
+              helperText={inputError}
+              error={inputError !== ""}
               onChange={(event) => {
+                setInputError("");
                 setUserInput(event.target.value);
               }}
             />
@@ -107,12 +123,7 @@ const EmployeeFilter = ({ departments, formControlClass, filter }) => {
               margin={"normal"}
               color="secondary"
               onClick={() => {
-                console.log(filter);
-                const filterParams = {
-                  type: radioOption.toLowerCase(),
-                  value: userInput,
-                };
-                filter(filterParams);
+                filterByUserInput();
               }}
             >
               Filter
