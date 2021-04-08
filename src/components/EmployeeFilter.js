@@ -13,7 +13,6 @@ const EmployeeFilter = ({
   formControlClass,
   filterByDepartment,
 }) => {
-  //   const [department, setDepartment] = useState("");
   return (
     <Box marginBottom={3}>
       <Paper elevation={2}>
@@ -23,12 +22,14 @@ const EmployeeFilter = ({
             <Select
               labelId="department-select-label"
               id="department-select"
-              //   value={department}
+              defaultValue={"all"}
               onChange={(event) => {
-                // setDepartment(event.target.value);
                 filterByDepartment(event.target.value);
               }}
             >
+              <MenuItem key={"all"} value={"all"} selected={true}>
+                All
+              </MenuItem>
               {departments.map((department) => (
                 <MenuItem key={department.id} value={department.name}>
                   {department.name}

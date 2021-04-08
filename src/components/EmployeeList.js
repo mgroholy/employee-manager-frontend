@@ -60,9 +60,13 @@ const EmployeeList = () => {
   };
 
   const filterByDepartment = async (department) => {
-    const response = await axios.get(
-      `${EMPLOYEES_REST_API_URL}/employees?department=${department}`
-    );
+    let url;
+    if (department === "all") {
+      url = EMPLOYEES_REST_API_URL;
+    } else {
+      url = `${EMPLOYEES_REST_API_URL}/employees?department=${department}`;
+    }
+    const response = await axios.get(url);
     console.log(response);
     setEmployees(response.data);
   };
@@ -74,11 +78,11 @@ const EmployeeList = () => {
 
   return (
     <Container>
-      <Box padding={5}>
+      {/* <Box padding={5}>
         <Typography variant="h3" align="center">
           Employees List
         </Typography>
-      </Box>
+      </Box> */}
       <EmployeeFilter
         departments={departments}
         formControlClass={classes.formControl}
