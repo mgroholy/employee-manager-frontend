@@ -38,6 +38,9 @@ const useStyles = makeStyles(() => ({
   formControl: {
     minWidth: "150px",
   },
+  tableRow: {
+    cursor: "pointer",
+  },
 }));
 
 const EmployeeList = () => {
@@ -78,11 +81,6 @@ const EmployeeList = () => {
 
   return (
     <Container>
-      {/* <Box padding={5}>
-        <Typography variant="h3" align="center">
-          Employees List
-        </Typography>
-      </Box> */}
       <EmployeeFilter
         departments={departments}
         formControlClass={classes.formControl}
@@ -108,6 +106,7 @@ const EmployeeList = () => {
               <TableRow
                 key={employee.ID}
                 onClick={() => history.push(`/employees/${employee.ID}`)}
+                className={classes.tableRow}
               >
                 <TableCell>{employee.Name}</TableCell>
 
