@@ -21,13 +21,18 @@ const EmployeeDetailHeader = (props) => {
   const deleteEmployee = async () => {
     const url = EMPLOYEE_REST_API_URL + props.employeeId + "/delete";
     try {
-      await axios.delete(url);
-      alert(
-        "Employee with ID " +
-          props.employeeId +
-          " has been successfully deleted!"
+      const answer = window.confirm(
+        "Delete employee with ID " + props.employeeId + "?"
       );
-      history.push("/employees");
+      if (answer) {
+        await axios.delete(url);
+        alert(
+          "Employee with ID " +
+            props.employeeId +
+            " has been successfully deleted!"
+        );
+        history.push("/employees");
+      }
     } catch (error) {
       alert("Employee with ID " + props.employeeId + " could not be found!");
     }
