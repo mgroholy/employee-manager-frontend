@@ -95,6 +95,7 @@ const EmployeeDetail = () => {
         <EmployeeDetailHeader
           employeeName={employee.Name}
           employeeId={employee.ID}
+          enterPressed={updateEmployee}
         />
       )}
       <div>
