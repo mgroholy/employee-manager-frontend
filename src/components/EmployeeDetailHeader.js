@@ -19,7 +19,7 @@ const EmployeeDetailHeader = (props) => {
   const history = useHistory();
 
   const deleteEmployee = async () => {
-    const url = EMPLOYEE_REST_API_URL + props.employeeId;
+    const url = EMPLOYEE_REST_API_URL + props.employeeId + "/delete";
     try {
       await axios.delete(url);
       alert(
