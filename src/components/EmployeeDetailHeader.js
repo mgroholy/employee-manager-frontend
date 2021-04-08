@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Update from "@material-ui/icons/Update";
 import Delete from "@material-ui/icons/Delete";
+import ArrowBackIos from "@material-ui/icons/ArrowBackIos";
 import axios from "axios";
+import { TextField } from "@material-ui/core";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -17,17 +19,23 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeDetailHeader = (props) => {
   const classes = useStyles();
   const history = useHistory();
+  const [hasUpdate, setHasUpdate] = useState(false);
 
   const deleteEmployee = async () => {
-    const url = EMPLOYEE_REST_API_URL + props.employeeId;
+    const url = EMPLOYEE_REST_API_URL + props.employeeId + "/delete";
     try {
-      await axios.delete(url);
-      alert(
-        "Employee with ID " +
-          props.employeeId +
-          " has been successfully deleted!"
+      const answer = window.confirm(
+        "Delete employee with ID " + props.employeeId + "?"
       );
-      history.push("/employees");
+      if (answer) {
+        await axios.delete(url);
+        alert(
+          "Employee with ID " +
+            props.employeeId +
+            " has been successfully deleted!"
+        );
+        history.push("/employees");
+      }
     } catch (error) {
       alert("Employee with ID " + props.employeeId + " could not be found!");
     }
@@ -40,21 +48,29 @@ const EmployeeDetailHeader = (props) => {
         alignItems: "center",
       }}
     >
-      <h1
-        style={{
-          marginRight: "2rem",
-        }}
-      >
-        {props.employeeName}
-      </h1>
+      {hasUpdate ? (
+        <TextField
+          label="Name"
+          onKeyDown={(e) => props.enterPressed("Name", e)}
+        ></TextField>
+      ) : (
+        <h1
+          style={{
+            marginRight: "2rem",
+          }}
+        >
+          {props.employeeName}
+        </h1>
+      )}
       <Button
         variant="contained"
         color="primary"
         size="small"
         className={classes.button}
-        startIcon={<Update />}
+        startIcon={hasUpdate ? <ArrowBackIos /> : <Update />}
+        onClick={() => setHasUpdate(!hasUpdate)}
       >
-        Update
+        Update name
       </Button>
       <Button
         variant="contained"
