@@ -6,14 +6,27 @@ import {
   Paper,
   TextField,
   Typography,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormHelperText,
+  makeStyles,
 } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import { sizing } from "@material-ui/system";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+const useStyles = makeStyles(() => ({
+  formErrorText: {
+    color: "red",
+  },
+}));
+
 const AddEmployee = () => {
+  const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
+
   const [employeeName, setName] = useState("");
   const [nameError, setNameError] = useState("");
   const [employeeEmail, setEmail] = useState("");
@@ -28,6 +41,10 @@ const AddEmployee = () => {
   const [clearanceError, setClearanceError] = useState("");
   const [employeePosition, setPosition] = useState("");
   const [positionError, setPositionError] = useState("");
+
+  const [departments, setDepartments] = useState([]);
+
+  const classes = useStyles();
 
   const sendEmployee = () => {
     const employee = {
@@ -103,6 +120,14 @@ const AddEmployee = () => {
     }
   };
 
+  const fetchDepartments = async () => {
+    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    console.log(response);
+    setDepartments(response.data);
+  };
+
+  useEffect(() => fetchDepartments(), []);
+
   return (
     <Container>
       <Paper elevation={2}>
@@ -157,20 +182,35 @@ const AddEmployee = () => {
                   helperText={dobError}
                   error={dobError !== ""}
                 />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Department:"
+                <FormControl
                   variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setDepartmentError("");
-                    setDepartment(event.target.value);
-                  }}
-                  helperText={departmentError}
-                  error={departmentError !== ""}
-                />
+                  fullWidth={true}
+                  margin={"normal"}
+                >
+                  <InputLabel id="department-select-label">
+                    Department
+                  </InputLabel>
+                  <Select
+                    labelId="department-select-label"
+                    id="department-select"
+                    defaultValue={""}
+                    error={departmentError !== ""}
+                    onChange={(event) => {
+                      setDepartmentError("");
+                      setDepartment(event.target.value);
+                    }}
+                    label="Department"
+                  >
+                    {departments.map((department) => (
+                      <MenuItem key={department.id} value={department.name}>
+                        {department.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText className={classes.formErrorText}>
+                    {departmentError}
+                  </FormHelperText>
+                </FormControl>
                 <TextField
                   margin={"normal"}
                   fullWidth={true}
