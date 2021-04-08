@@ -46,6 +46,8 @@ const useStyles = makeStyles(() => ({
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [inputError, setInputError] = useState("");
 
   const classes = useStyles();
 
@@ -62,16 +64,16 @@ const EmployeeList = () => {
     setDepartments(response.data);
   };
 
-  const filterByDepartment = async (department) => {
-    let url;
-    if (department === "all") {
-      url = EMPLOYEES_REST_API_URL;
-    } else {
-      url = `${EMPLOYEES_REST_API_URL}/employees?department=${department}`;
+  const filterByInput = async (input) => {
+    const url = `${EMPLOYEES_REST_API_URL}/employees?${input.type}=${input.value}`;
+    let errorDuringFetch = false;
+    const response = await axios.get(url).catch((error) => {
+      errorDuringFetch = true;
+      setInputError(error.response.data.message);
+    });
+    if (!errorDuringFetch) {
+      setEmployees(response.data);
     }
-    const response = await axios.get(url);
-    console.log(response);
-    setEmployees(response.data);
   };
 
   useEffect(() => {
@@ -84,7 +86,11 @@ const EmployeeList = () => {
       <EmployeeFilter
         departments={departments}
         formControlClass={classes.formControl}
-        filterByDepartment={filterByDepartment}
+        filter={filterByInput}
+        inputError={inputError}
+        setInputError={setInputError}
+        userInput={userInput}
+        setUserInput={setUserInput}
       />
 
       <TableContainer component={Paper} elevation={2}>
