@@ -107,22 +107,19 @@ const AddEmployee = () => {
   const history = useHistory();
 
   const sendRequest = async (employee) => {
-    let errorDuringFetch = false;
-    const response = await axios
-      .post("http://localhost:8080/employees", employee)
-      .catch((error) => {
-        errorDuringFetch = true;
-        console.log(error.response.data.message);
-        setEmailError(error.response.data.message);
-      });
-    if (!errorDuringFetch) {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/employees",
+        employee
+      );
       history.push(`/employees/${response.data.ID}`);
+    } catch (error) {
+      setEmailError(error.response.data.message);
     }
   };
 
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL);
-    console.log(response);
     setDepartments(response.data);
   };
 
