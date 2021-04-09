@@ -60,19 +60,16 @@ const EmployeeList = () => {
 
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL);
-    console.log(response);
     setDepartments(response.data);
   };
 
   const filterByInput = async (input) => {
     const url = `${EMPLOYEES_REST_API_URL}/employees?${input.type}=${input.value}`;
-    let errorDuringFetch = false;
-    const response = await axios.get(url).catch((error) => {
-      errorDuringFetch = true;
-      setInputError(error.response.data.message);
-    });
-    if (!errorDuringFetch) {
+    try {
+      const response = await axios.get(url);
       setEmployees(response.data);
+    } catch (error) {
+      setInputError(error.response.data.message);
     }
   };
 
