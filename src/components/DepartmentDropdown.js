@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { FormControl, MenuItem, Select } from "@material-ui/core";
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
 const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
 const DepartmentDropdown = (props) => {
   const [departments, setDepartments] = useState([]);
+  const labelRef = useRef();
+  const labelWidth = labelRef.current ? labelRef.current.clientWidth : 0;
 
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL);
@@ -16,7 +18,10 @@ const DepartmentDropdown = (props) => {
 
   return (
     <FormControl style={{ minWidth: "15%" }} variant="outlined">
-      <Select value={""}>
+      <InputLabel id="department" ref={labelRef}>
+        New Department
+      </InputLabel>
+      <Select labelId="department" labelWidth={labelWidth} value={""}>
         {departments.map((department) => (
           <MenuItem
             onClick={props.onDepartmentClick}
