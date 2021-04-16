@@ -95,6 +95,14 @@ const EmployeeDetail = () => {
     setHasUpdate(!hasUpdate);
   };
 
+  const updateDate = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.value;
+    employee["Date of birth"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -121,7 +129,9 @@ const EmployeeDetail = () => {
                   : employee[attribute]}
               </Typography>
             </AccordionSummary>
-            {index !== 0 && attribute !== "Department" ? (
+            {index !== 0 &&
+            attribute !== "Department" &&
+            attribute !== "Date of birth" ? (
               <AccordionDetails>
                 <TextField
                   label={"New " + attribute}
@@ -133,6 +143,23 @@ const EmployeeDetail = () => {
             ) : (
               <></>
             )}
+
+            {attribute === "Date of birth" ? (
+              <AccordionDetails>
+                <TextField
+                  style={{ minWidth: "15%" }}
+                  label="New Date of birth:"
+                  variant="outlined"
+                  type="date"
+                  defaultValue="1985-01-01"
+                  InputLabelProps={{ shrink: true }}
+                  onChange={updateDate}
+                />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
             {attribute === "Department" ? (
               <AccordionDetails>
                 <DepartmentDropdown onDepartmentClick={updateDepartment} />
