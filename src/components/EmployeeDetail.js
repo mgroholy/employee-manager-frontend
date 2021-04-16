@@ -103,6 +103,14 @@ const EmployeeDetail = () => {
     setHasUpdate(!hasUpdate);
   };
 
+  const updateClearanceLevel = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.dataset.value;
+    employee["Clearance level"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -131,7 +139,8 @@ const EmployeeDetail = () => {
             </AccordionSummary>
             {index !== 0 &&
             attribute !== "Department" &&
-            attribute !== "Date of birth" ? (
+            attribute !== "Date of birth" &&
+            attribute !== "Clearance level" ? (
               <AccordionDetails>
                 <TextField
                   label={"New " + attribute}
@@ -163,6 +172,17 @@ const EmployeeDetail = () => {
             {attribute === "Department" ? (
               <AccordionDetails>
                 <Dropdown type={attribute} onDropdownClick={updateDepartment} />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Clearance level" ? (
+              <AccordionDetails>
+                <Dropdown
+                  type={attribute}
+                  onDropdownClick={updateClearanceLevel}
+                />
               </AccordionDetails>
             ) : (
               <></>
