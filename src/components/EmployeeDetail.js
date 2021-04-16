@@ -134,7 +134,9 @@ const EmployeeDetail = () => {
               <></>
             )}
             {attribute === "Department" ? (
-              <DepartmentDropdown onDepartmentClick={updateDepartment} />
+              <AccordionDetails>
+                <DepartmentDropdown onDepartmentClick={updateDepartment} />
+              </AccordionDetails>
             ) : (
               <></>
             )}
