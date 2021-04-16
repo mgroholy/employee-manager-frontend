@@ -27,102 +27,106 @@ const useStyles = makeStyles(() => ({
 const AddEmployee = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
-  const [employeeName, setName] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [employeeEmail, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [employeeDateOfBirth, setDateOfBirth] = useState("");
-  const [dobError, setDobError] = useState("");
-  const [employeeDepartment, setDepartment] = useState("");
-  const [departmentError, setDepartmentError] = useState("");
-  const [employeePhoneNumber, setPhoneNumber] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [employeeClearanceLevel, setClearanceLevel] = useState("");
-  const [clearanceError, setClearanceError] = useState("");
-  const [employeePosition, setPosition] = useState("");
-  const [positionError, setPositionError] = useState("");
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    dateOfBirth: "",
+    department: "",
+    position: "",
+    clearanceLevel: "",
+    phoneNumber: "",
+  });
+
+  const [error, setError] = useState({
+    name: "",
+    email: "",
+    dateOfBirth: "",
+    department: "",
+    position: "",
+    clearanceLevel: "",
+    phoneNumber: "",
+  });
 
   const [departments, setDepartments] = useState([]);
 
   const classes = useStyles();
 
   const sendEmployee = () => {
-    const employee = {
-      Name: employeeName,
-      Email: employeeEmail,
-      Department: employeeDepartment,
-      "Phone number": employeePhoneNumber,
-      "Date of birth": employeeDateOfBirth,
-      "Clearance level": employeeClearanceLevel.toUpperCase(),
-      Position: employeePosition,
+    const employeeData = {
+      Name: employee.name,
+      Email: employee.email,
+      Department: employee.department,
+      "Phone number": employee.phoneNumber,
+      "Date of birth": employee.dateOfBirth,
+      "Clearance level": employee.clearanceLevel.toUpperCase(),
+      Position: employee.position,
     };
 
-    let validForm = validateFormData(employee);
+    let validForm = validateFormData(employeeData);
 
     if (validForm) {
-      sendRequest(employee);
+      sendRequest(employeeData);
     }
   };
 
   const validateFormData = (data) => {
     let valid = true;
+    let fieldErrors = error;
     if (data.Name === "") {
-      setNameError("Required field.");
+      fieldErrors = { ...fieldErrors, name: "Required field." };
       valid = false;
     }
     if (data.Email === "") {
-      setEmailError("Required field.");
+      fieldErrors = { ...fieldErrors, email: "Required field." };
       valid = false;
     } else {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       let result = re.test(String(data.Email).toLowerCase());
       if (result === false) {
         valid = false;
-        setEmailError("Invalid email format.");
+        fieldErrors = { ...fieldErrors, email: "Invalid email format." };
       }
     }
     if (data.Department === "") {
-      setDepartmentError("Required field.");
+      fieldErrors = { ...fieldErrors, department: "Required field." };
       valid = false;
     }
     if (data["Date of birth"] === "") {
-      setDobError("Required field.");
+      fieldErrors = { ...fieldErrors, dateOfBirth: "Required field." };
       valid = false;
     }
     if (data["Clearance level"] === "") {
-      setClearanceError("Required field.");
+      fieldErrors = { ...fieldErrors, clearanceLevel: "Required field." };
       valid = false;
     }
     if (data.Position === "") {
-      setPositionError("Required field.");
+      fieldErrors = { ...fieldErrors, position: "Required field." };
       valid = false;
     }
     if (data["Phone number"] === "") {
-      setPhoneError("Required field.");
+      fieldErrors = { ...fieldErrors, phoneNumber: "Required field." };
       valid = false;
     }
+    setError(fieldErrors);
     return valid;
   };
 
   const history = useHistory();
 
   const sendRequest = async (employee) => {
-    let errorDuringFetch = false;
-    const response = await axios
-      .post("http://localhost:8080/employees", employee)
-      .catch((error) => {
-        errorDuringFetch = true;
-        console.log(error.response.data.message);
-        setEmailError(error.response.data.message);
-      });
-    if (!errorDuringFetch) {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/employees",
+        employee
+      );
       history.push(`/employees/${response.data.ID}`);
+    } catch (apiError) {
+      setError({ ...error, email: apiError.response.data.message });
     }
   };
 
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL);
-    console.log(response);
     setDepartments(response.data);
   };
 
@@ -145,11 +149,11 @@ const AddEmployee = () => {
                   variant="outlined"
                   required={true}
                   onChange={(event) => {
-                    setNameError("");
-                    setName(event.target.value);
+                    setError({ ...error, name: "" });
+                    setEmployee({ ...employee, name: event.target.value });
                   }}
-                  helperText={nameError}
-                  error={nameError !== ""}
+                  helperText={error.name}
+                  error={error.name !== ""}
                 />
                 <TextField
                   margin={"normal"}
@@ -160,11 +164,11 @@ const AddEmployee = () => {
                   required={true}
                   type="email"
                   onChange={(event) => {
-                    setEmailError("");
-                    setEmail(event.target.value);
+                    setError({ ...error, email: "" });
+                    setEmployee({ ...employee, email: event.target.value });
                   }}
-                  helperText={emailError}
-                  error={emailError !== ""}
+                  helperText={error.email}
+                  error={error.email !== ""}
                 />
                 <TextField
                   margin={"normal"}
@@ -176,11 +180,14 @@ const AddEmployee = () => {
                   InputLabelProps={{ shrink: true }}
                   required={true}
                   onChange={(event) => {
-                    setDobError("");
-                    setDateOfBirth(event.target.value);
+                    setError({ ...error, dateOfBirth: "" });
+                    setEmployee({
+                      ...employee,
+                      dateOfBirth: event.target.value,
+                    });
                   }}
-                  helperText={dobError}
-                  error={dobError !== ""}
+                  helperText={error.dateOfBirth}
+                  error={error.dateOfBirth !== ""}
                 />
                 <FormControl
                   variant="outlined"
@@ -194,10 +201,13 @@ const AddEmployee = () => {
                     labelId="department-select-label"
                     id="department-select"
                     defaultValue={""}
-                    error={departmentError !== ""}
+                    error={error.department !== ""}
                     onChange={(event) => {
-                      setDepartmentError("");
-                      setDepartment(event.target.value);
+                      setError({ ...error, department: "" });
+                      setEmployee({
+                        ...employee,
+                        department: event.target.value,
+                      });
                     }}
                     label="Department"
                   >
@@ -208,7 +218,7 @@ const AddEmployee = () => {
                     ))}
                   </Select>
                   <FormHelperText className={classes.formErrorText}>
-                    {departmentError}
+                    {error.department}
                   </FormHelperText>
                 </FormControl>
                 <TextField
@@ -220,11 +230,14 @@ const AddEmployee = () => {
                   required={true}
                   type="tel"
                   onChange={(event) => {
-                    setPhoneError("");
-                    setPhoneNumber(event.target.value);
+                    setError({ ...error, phoneNumber: "" });
+                    setEmployee({
+                      ...employee,
+                      phoneNumber: event.target.value,
+                    });
                   }}
-                  helperText={phoneError}
-                  error={phoneError !== ""}
+                  helperText={error.phoneNumber}
+                  error={error.phoneNumber !== ""}
                 />
                 <TextField
                   margin={"normal"}
@@ -234,11 +247,14 @@ const AddEmployee = () => {
                   variant="outlined"
                   required={true}
                   onChange={(event) => {
-                    setClearanceError("");
-                    setClearanceLevel(event.target.value);
+                    setError({ ...error, clearanceLevel: "" });
+                    setEmployee({
+                      ...employee,
+                      clearanceLevel: event.target.value,
+                    });
                   }}
-                  helperText={clearanceError}
-                  error={clearanceError !== ""}
+                  helperText={error.clearanceLevel}
+                  error={error.clearanceLevel !== ""}
                 />
                 <TextField
                   margin={"normal"}
@@ -248,11 +264,11 @@ const AddEmployee = () => {
                   variant="outlined"
                   required={true}
                   onChange={(event) => {
-                    setPositionError("");
-                    setPosition(event.target.value);
+                    setError({ ...error, position: "" });
+                    setEmployee({ ...employee, position: event.target.value });
                   }}
-                  helperText={positionError}
-                  error={positionError !== ""}
+                  helperText={error.position}
+                  error={error.position !== ""}
                 />
                 <Button
                   variant="outlined"
