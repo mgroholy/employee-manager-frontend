@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
-import DepartmentDropdown from "./DepartmentDropdown";
+import Dropdown from "./Dropdown";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -162,7 +162,7 @@ const EmployeeDetail = () => {
 
             {attribute === "Department" ? (
               <AccordionDetails>
-                <DepartmentDropdown onDepartmentClick={updateDepartment} />
+                <Dropdown type={attribute} onDropdownClick={updateDepartment} />
               </AccordionDetails>
             ) : (
               <></>
