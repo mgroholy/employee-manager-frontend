@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
+import DepartmentDropdown from "./DepartmentDropdown";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -86,6 +87,14 @@ const EmployeeDetail = () => {
     }
   };
 
+  const updateDepartment = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.dataset.value;
+    employee["Department"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -112,7 +121,7 @@ const EmployeeDetail = () => {
                   : employee[attribute]}
               </Typography>
             </AccordionSummary>
-            {index !== 0 ? (
+            {index !== 0 && attribute !== "Department" ? (
               <AccordionDetails>
                 <TextField
                   label={"New " + attribute}
@@ -124,6 +133,12 @@ const EmployeeDetail = () => {
             ) : (
               <></>
             )}
+            {attribute === "Department" ? (
+              <DepartmentDropdown onDepartmentClick={updateDepartment} />
+            ) : (
+              <></>
+            )}
+
             {errorMessage !== {} &&
             Object.keys(errorMessage)[0] === attribute ? (
               <Typography className={classes.error}>
