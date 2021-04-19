@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Fragment } from "react";
 import AddEmployee from "./components/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetail";
+import AddDepartment from "./components/AddDepartment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +37,7 @@ function App() {
           <Route exact path="/add-employee" component={AddEmployee} />
           <Route exact path="/employees/:id" component={EmployeeDetail} />
           <Route exact path="/departments" component={Fragment} />
-          <Route exact path="/add-department" component={Fragment} />
+          <Route exact path="/add-department" component={AddDepartment} />
         </main>
       </div>
     </Router>
