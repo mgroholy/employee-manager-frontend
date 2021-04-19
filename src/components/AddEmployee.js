@@ -106,6 +106,17 @@ const AddEmployee = () => {
     if (data["Phone number"] === "") {
       fieldErrors = { ...fieldErrors, phoneNumber: "Required field." };
       valid = false;
+    } else {
+      if (!data["Phone number"].match("^[0-9]+$")) {
+        fieldErrors = { ...fieldErrors, phoneNumber: "Invalid input." };
+        valid = false;
+      } else if (data["Phone number"].length !== 11) {
+        fieldErrors = {
+          ...fieldErrors,
+          phoneNumber: "Invalid input. Phone number wrong lenght.",
+        };
+        valid = false;
+      }
     }
     setError(fieldErrors);
     return valid;
