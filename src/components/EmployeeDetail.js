@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
+import Dropdown from "./Dropdown";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -86,6 +87,30 @@ const EmployeeDetail = () => {
     }
   };
 
+  const updateDepartment = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.dataset.value;
+    employee["Department"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
+  const updateDate = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.value;
+    employee["Date of birth"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
+  const updateClearanceLevel = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.dataset.value;
+    employee["Clearance level"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -112,7 +137,10 @@ const EmployeeDetail = () => {
                   : employee[attribute]}
               </Typography>
             </AccordionSummary>
-            {index !== 0 ? (
+            {index !== 0 &&
+            attribute !== "Department" &&
+            attribute !== "Date of birth" &&
+            attribute !== "Clearance level" ? (
               <AccordionDetails>
                 <TextField
                   label={"New " + attribute}
@@ -124,6 +152,42 @@ const EmployeeDetail = () => {
             ) : (
               <></>
             )}
+
+            {attribute === "Date of birth" ? (
+              <AccordionDetails>
+                <TextField
+                  style={{ minWidth: "15%" }}
+                  label="New Date of birth:"
+                  variant="outlined"
+                  type="date"
+                  defaultValue="1985-01-01"
+                  InputLabelProps={{ shrink: true }}
+                  onChange={updateDate}
+                />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Department" ? (
+              <AccordionDetails>
+                <Dropdown type={attribute} onDropdownClick={updateDepartment} />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Clearance level" ? (
+              <AccordionDetails>
+                <Dropdown
+                  type={attribute}
+                  onDropdownClick={updateClearanceLevel}
+                />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
             {errorMessage !== {} &&
             Object.keys(errorMessage)[0] === attribute ? (
               <Typography className={classes.error}>
