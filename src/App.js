@@ -38,7 +38,6 @@ function App() {
           <Route exact path="/add-employee" component={AddEmployee} />
           <Route exact path="/employees/:id" component={EmployeeDetail} />
           <Route exact path="/departments" component={DepartmentList} />
-          <Route exact path="/add-department" component={AddDepartment} />
         </main>
       </div>
     </Router>
