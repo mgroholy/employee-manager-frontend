@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import AddDepartment from "./AddDepartment";
@@ -83,7 +84,14 @@ const DepartmentList = () => {
                 <TableCell className={classes.tableCell}>
                   <DeleteIcon
                     className={classes.trashIcon}
-                    onClick={() => deleteDepartment(department.id)}
+                    onClick={
+                      department.employeeCount === 0
+                        ? () => deleteDepartment(department.id)
+                        : () =>
+                            alert(
+                              "Department with employees cannot be deleted."
+                            )
+                    }
                   />
                 </TableCell>
               </TableRow>
