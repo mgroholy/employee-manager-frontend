@@ -4,28 +4,54 @@ import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
 const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 const LEVELS_REST_API_URL = "http://localhost:8080/levels";
+const STATUSES_REST_API_URL = "http://localhost:8080/statuses";
 
 const Dropdown = (props) => {
   const [data, setData] = useState([]);
   const labelRef = useRef();
   const labelWidth = labelRef.current ? labelRef.current.clientWidth : 0;
 
-  const url =
-    props.type === "Department"
-      ? DEPARTMENTS_REST_API_URL
-      : LEVELS_REST_API_URL;
-
-  const fetchData = async (url) => {
-    const response = await axios.get(url);
-    setData(response.data);
+  const getUrl = () => {
+    switch (props.type) {
+      case "Department":
+        return DEPARTMENTS_REST_API_URL;
+      case "Clearance level":
+        return LEVELS_REST_API_URL;
+      case "Status":
+        return STATUSES_REST_API_URL;
+      default:
+        throw new Error("Case " + props.type + " not found.");
+    }
   };
 
-  useEffect(() => fetchData(url), [url]);
+  const getLabel = () => {
+    switch (props.type) {
+      case "Department":
+        return "New Department";
+      case "Clearance level":
+        return "New Level";
+      case "Status":
+        return "New Status";
+      default:
+        throw new Error("Case " + props.type + " not found.");
+    }
+  };
+
+  const url = getUrl();
+  const label = getLabel();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(url);
+      setData(response.data);
+    };
+    fetchData();
+  }, [url]);
 
   return (
     <FormControl style={{ minWidth: "15%" }} variant="outlined">
       <InputLabel id="dropdown" ref={labelRef}>
-        {props.type === "Department" ? "New Department" : "New Level"}
+        {label}
       </InputLabel>
       <Select labelId="dropdown" labelWidth={labelWidth} value={""}>
         {data.map((item, index) => (
