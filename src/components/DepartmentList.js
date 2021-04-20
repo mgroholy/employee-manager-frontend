@@ -30,6 +30,9 @@ const useStyles = makeStyles(() => ({
     minWidth: "150px",
   },
   tableCell: {},
+  trashIcon: {
+    cursor: "pointer",
+  },
 }));
 
 const DepartmentList = () => {
@@ -78,7 +81,10 @@ const DepartmentList = () => {
                   {department.employeeCount}
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <DeleteIcon onClick={() => deleteDepartment(department.id)} />
+                  <DeleteIcon
+                    className={classes.trashIcon}
+                    onClick={() => deleteDepartment(department.id)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
