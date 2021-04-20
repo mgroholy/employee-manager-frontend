@@ -111,6 +111,14 @@ const EmployeeDetail = () => {
     setHasUpdate(!hasUpdate);
   };
 
+  const updateStatus = async (e) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/update";
+    const selected = e.target.dataset.value;
+    employee["Status"] = selected;
+    await axios.put(url, employee);
+    setHasUpdate(!hasUpdate);
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -122,12 +130,15 @@ const EmployeeDetail = () => {
           employeeName={employee.Name}
           employeeId={employee.ID}
           enterPressed={updateEmployee}
+          status={employee.Status}
         />
       )}
       <div>
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
-            <AccordionSummary expandIcon={index !== 0 ? <Update /> : <></>}>
+            <AccordionSummary
+              expandIcon={attribute !== "ID" ? <Update /> : <></>}
+            >
               <Typography className={classes.attributeName}>
                 {attribute}
               </Typography>
@@ -137,7 +148,8 @@ const EmployeeDetail = () => {
                   : employee[attribute]}
               </Typography>
             </AccordionSummary>
-            {index !== 0 &&
+            {attribute !== "ID" &&
+            attribute !== "Status" &&
             attribute !== "Department" &&
             attribute !== "Date of birth" &&
             attribute !== "Clearance level" ? (
@@ -183,6 +195,14 @@ const EmployeeDetail = () => {
                   type={attribute}
                   onDropdownClick={updateClearanceLevel}
                 />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Status" ? (
+              <AccordionDetails>
+                <Dropdown type={attribute} onDropdownClick={updateStatus} />
               </AccordionDetails>
             ) : (
               <></>

@@ -7,6 +7,7 @@ import Delete from "@material-ui/icons/Delete";
 import ArrowBackIos from "@material-ui/icons/ArrowBackIos";
 import axios from "axios";
 import { TextField } from "@material-ui/core";
+import { Archive } from "@material-ui/icons";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -82,6 +83,19 @@ const EmployeeDetailHeader = (props) => {
       >
         Delete
       </Button>
+      {props.status === "INACTIVE" ? (
+        <Button
+          variant="contained"
+          size="small"
+          disabled
+          className={classes.button}
+          startIcon={<Archive />}
+        >
+          Deactivated
+        </Button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
