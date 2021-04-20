@@ -84,18 +84,6 @@ const SideBar = () => {
               </ListItemIcon>
               <ListItemText primary={"Departments"} />
             </ListItem>
-
-            <ListItem
-              button
-              component={NavLink}
-              to="/add-department"
-              activeClassName={classes.active}
-            >
-              <ListItemIcon style={{ color: "white" }}>
-                <Add />
-              </ListItemIcon>
-              <ListItemText primary={"Add new department"} />
-            </ListItem>
           </List>
         </div>
       </Drawer>
