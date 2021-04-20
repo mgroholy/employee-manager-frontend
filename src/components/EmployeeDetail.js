@@ -87,14 +87,6 @@ const EmployeeDetail = () => {
     }
   };
 
-  const updateDepartment = async (e) => {
-    const url = EMPLOYEE_REST_API_URL + id + "/update";
-    const selected = e.target.dataset.value;
-    employee["Department"] = selected;
-    await axios.put(url, employee);
-    setHasUpdate(!hasUpdate);
-  };
-
   const updateDate = async (e) => {
     const url = EMPLOYEE_REST_API_URL + id + "/update";
     const selected = e.target.value;
@@ -103,18 +95,10 @@ const EmployeeDetail = () => {
     setHasUpdate(!hasUpdate);
   };
 
-  const updateClearanceLevel = async (e) => {
+  const updateDropdownValue = async (attribute, e) => {
     const url = EMPLOYEE_REST_API_URL + id + "/update";
     const selected = e.target.dataset.value;
-    employee["Clearance level"] = selected;
-    await axios.put(url, employee);
-    setHasUpdate(!hasUpdate);
-  };
-
-  const updateStatus = async (e) => {
-    const url = EMPLOYEE_REST_API_URL + id + "/update";
-    const selected = e.target.dataset.value;
-    employee["Status"] = selected;
+    employee[attribute] = selected;
     await axios.put(url, employee);
     setHasUpdate(!hasUpdate);
   };
@@ -181,28 +165,14 @@ const EmployeeDetail = () => {
               <></>
             )}
 
-            {attribute === "Department" ? (
-              <AccordionDetails>
-                <Dropdown type={attribute} onDropdownClick={updateDepartment} />
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Clearance level" ? (
+            {attribute === "Department" ||
+            attribute === "Clearance level" ||
+            attribute === "Status" ? (
               <AccordionDetails>
                 <Dropdown
                   type={attribute}
-                  onDropdownClick={updateClearanceLevel}
+                  onDropdownClick={(e) => updateDropdownValue(attribute, e)}
                 />
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Status" ? (
-              <AccordionDetails>
-                <Dropdown type={attribute} onDropdownClick={updateStatus} />
               </AccordionDetails>
             ) : (
               <></>
