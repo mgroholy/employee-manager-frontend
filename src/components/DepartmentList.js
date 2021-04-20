@@ -13,6 +13,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import AddDepartment from "./AddDepartment";
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -82,7 +83,9 @@ const DepartmentList = () => {
               </TableRow>
             ))}
             <TableRow>
-              <TableCell>Add Department</TableCell>
+              <TableCell>
+                <AddDepartment fetchDepartments={fetchDepartments} />
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
