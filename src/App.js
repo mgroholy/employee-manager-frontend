@@ -10,6 +10,7 @@ import { Fragment } from "react";
 import AddEmployee from "./components/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetail";
 import AddDepartment from "./components/AddDepartment";
+import DepartmentList from "./components/DepartmentList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,8 +37,7 @@ function App() {
           <Route exact path="/employees" component={EmployeeList} />
           <Route exact path="/add-employee" component={AddEmployee} />
           <Route exact path="/employees/:id" component={EmployeeDetail} />
-          <Route exact path="/departments" component={Fragment} />
-          <Route exact path="/add-department" component={AddDepartment} />
+          <Route exact path="/departments" component={DepartmentList} />
         </main>
       </div>
     </Router>
