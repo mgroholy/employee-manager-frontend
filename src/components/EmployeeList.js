@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  AppBar,
-  Box,
   Container,
-  FormControl,
   Paper,
   Table,
   TableBody,
@@ -12,13 +9,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Select,
-  MenuItem,
-  InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import EmployeeFilter from "./EmployeeFilter";
 
 const EMPLOYEES_REST_API_URL = "http://localhost:8080/";

@@ -1,5 +1,4 @@
 import {
-  FormControlLabel,
   FormControl,
   InputLabel,
   Select,
