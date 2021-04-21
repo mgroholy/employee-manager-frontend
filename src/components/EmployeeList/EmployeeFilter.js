@@ -1,21 +1,9 @@
-import {
-  Box,
-  Paper,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
-  FormLabel,
-  Button,
-  Typography,
-  Checkbox,
-} from "@material-ui/core";
+import { Box, Paper, TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import DepartmentFilterDropDown from "./DepartmentFilterDropDown";
+import FilterTypeRadio from "./FilterTypeRadio";
+import ShowInactiveCheckbox from "./ShowInactiveCheckbox";
 
 const useStyles = makeStyles(() => ({
   formContainer: {
@@ -29,11 +17,13 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-around",
     width: "55%",
   },
+  formControl: {
+    minWidth: "150px",
+  },
 }));
 
 const EmployeeFilter = ({
   departments,
-  formControlClass,
   filter,
   setError,
   userInput,
@@ -56,88 +46,23 @@ const EmployeeFilter = ({
           paddingRight={5}
           className={classes.formContainer}
         >
-          <FormControl className={formControlClass} variant={"outlined"}>
-            <InputLabel id="department-select-label">Department</InputLabel>
-            <Select
-              labelId="department-select-label"
-              id="department-select"
-              defaultValue={"all"}
-              value={departmentOption}
-              onChange={(event) => {
-                setUserInput("");
-                setError("");
-                setDepartmentOption(event.target.value);
-                console.log("value ", event.target.value);
-              }}
-            >
-              <MenuItem key={"all"} value={"all"} selected={true}>
-                All
-              </MenuItem>
-              {departments.map((department) => (
-                <MenuItem key={department.id} value={department.name}>
-                  {department.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={showInactive}
-                onChange={() => {
-                  setShowInactive(!showInactive);
-                  setError("");
-                }}
-                name="showInactive"
-              />
-            }
-            label="Show inactive employees"
+          <DepartmentFilterDropDown
+            departmentOption={departmentOption}
+            departments={departments}
+            setUserInput={setUserInput}
+            setError={setError}
+            setDepartmentOption={setDepartmentOption}
+          />
+          <ShowInactiveCheckbox
+            showInactive={showInactive}
+            setShowInactive={setShowInactive}
+            setError={setError}
           />
           <Box className={classes.userInputContainer}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Type</FormLabel>
-              <RadioGroup
-                row
-                aria-label="type"
-                name="type"
-                defaultValue="Name"
-                onChange={(event) => {
-                  setRadioOption(event.target.value);
-                }}
-              >
-                <FormControlLabel
-                  value="Name"
-                  control={<Radio size="small" color="primary" />}
-                  label={
-                    <Typography variant="body2" color="textSecondary">
-                      Name
-                    </Typography>
-                  }
-                  selected={true}
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="Email"
-                  control={<Radio size="small" color="primary" />}
-                  label={
-                    <Typography variant="body2" color="textSecondary">
-                      Email
-                    </Typography>
-                  }
-                  labelPlacement="bottom"
-                />
-                <FormControlLabel
-                  value="Id"
-                  control={<Radio size="small" color="primary" />}
-                  label={
-                    <Typography variant="body2" color="textSecondary">
-                      Id
-                    </Typography>
-                  }
-                  labelPlacement="bottom"
-                />
-              </RadioGroup>
-            </FormControl>
+            <FilterTypeRadio
+              setRadioOption={setRadioOption}
+              setUserInput={setUserInput}
+            />
             <TextField
               id="outlined-basic"
               label={radioOption}
