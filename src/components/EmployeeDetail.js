@@ -3,13 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
-import { Update } from "@material-ui/icons";
+import { Archive, Update } from "@material-ui/icons";
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   TextField,
+  Button,
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
 import Dropdown from "./Dropdown";
@@ -34,6 +35,14 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     marginLeft: "15px",
   },
+  date: {
+    minWidth: "15%",
+  },
+  button: {
+    maxHeight: "30px",
+    margin: "auto 0",
+    marginLeft: "15px",
+  },
 }));
 
 const EmployeeDetail = () => {
@@ -43,6 +52,10 @@ const EmployeeDetail = () => {
   const [isError, setIsError] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
+  const [status, setStatus] = useState("ACTIVE");
+  const [terminationDate, setTerminationDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
 
   let employeeAttributes = Object.keys(employee);
   const index = employeeAttributes.indexOf("Name");
@@ -87,20 +100,49 @@ const EmployeeDetail = () => {
     }
   };
 
-  const updateDate = async (e) => {
+  const updateDateValue = async (attribute, e) => {
     const url = EMPLOYEE_REST_API_URL + id + "/update";
     const selected = e.target.value;
-    employee["Date of birth"] = selected;
+    employee[attribute] = selected;
     await axios.put(url, employee);
     setHasUpdate(!hasUpdate);
   };
 
   const updateDropdownValue = async (attribute, e) => {
+    if (attribute === "Status") setStatus("ACTIVE");
+    else {
+      const selected = e.target.dataset.value;
+      const url = EMPLOYEE_REST_API_URL + id + "/update";
+      employee[attribute] = selected;
+      await axios.put(url, employee);
+      setHasUpdate(!hasUpdate);
+    }
+  };
+
+  const updateStatus = async () => {
+    if (employee.Status === "ACTIVE") {
+      employee["Date of termination"] = terminationDate;
+      employee["Status"] = "INACTIVE";
+    } else {
+      employee["Status"] = status;
+      employee["Date of termination"] = null;
+    }
+
     const url = EMPLOYEE_REST_API_URL + id + "/update";
-    const selected = e.target.dataset.value;
-    employee[attribute] = selected;
     await axios.put(url, employee);
     setHasUpdate(!hasUpdate);
+  };
+
+  const isSpecialField = (attribute) => {
+    const specialFields = [
+      "ID",
+      "Status",
+      "Department",
+      "Date of birth",
+      "Clearance level",
+      "Date of termination",
+    ];
+    return specialFields.includes(attribute);
   };
 
   return (
@@ -121,7 +163,13 @@ const EmployeeDetail = () => {
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
             <AccordionSummary
-              expandIcon={attribute !== "ID" ? <Update /> : <></>}
+              expandIcon={
+                attribute !== "ID" && employee[attribute] !== null ? (
+                  <Update />
+                ) : (
+                  <></>
+                )
+              }
             >
               <Typography className={classes.attributeName}>
                 {attribute}
@@ -132,11 +180,8 @@ const EmployeeDetail = () => {
                   : employee[attribute]}
               </Typography>
             </AccordionSummary>
-            {attribute !== "ID" &&
-            attribute !== "Status" &&
-            attribute !== "Department" &&
-            attribute !== "Date of birth" &&
-            attribute !== "Clearance level" ? (
+
+            {!isSpecialField(attribute) ? (
               <AccordionDetails>
                 <TextField
                   label={"New " + attribute}
@@ -152,26 +197,73 @@ const EmployeeDetail = () => {
             {attribute === "Date of birth" ? (
               <AccordionDetails>
                 <TextField
-                  style={{ minWidth: "15%" }}
+                  className={classes.date}
                   label="New Date of birth:"
                   variant="outlined"
                   type="date"
                   defaultValue="1985-01-01"
                   InputLabelProps={{ shrink: true }}
-                  onChange={updateDate}
+                  onChange={(e) => updateDateValue(attribute, e)}
                 />
               </AccordionDetails>
             ) : (
               <></>
             )}
 
-            {attribute === "Department" ||
-            attribute === "Clearance level" ||
-            attribute === "Status" ? (
+            {attribute === "Department" || attribute === "Clearance level" ? (
               <AccordionDetails>
                 <Dropdown
                   type={attribute}
                   onDropdownClick={(e) => updateDropdownValue(attribute, e)}
+                />
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Status" ? (
+              <AccordionDetails>
+                {employee.Status === "ACTIVE" ? (
+                  <TextField
+                    className={classes.date}
+                    label="Date of termination:"
+                    variant="outlined"
+                    type="date"
+                    defaultValue={terminationDate}
+                    InputLabelProps={{ shrink: true }}
+                    onChange={(e) => setTerminationDate(e.target.value)}
+                  />
+                ) : (
+                  <Dropdown
+                    type={attribute}
+                    onDropdownClick={(e) => updateDropdownValue(attribute, e)}
+                  />
+                )}
+
+                <Button
+                  variant="contained"
+                  size="small"
+                  startIcon={<Archive />}
+                  className={classes.button}
+                  onClick={updateStatus}
+                >
+                  Set
+                </Button>
+              </AccordionDetails>
+            ) : (
+              <></>
+            )}
+
+            {attribute === "Date of termination" &&
+            employee[attribute] !== null ? (
+              <AccordionDetails>
+                <TextField
+                  className={classes.date}
+                  label="New Date of termination:"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) => updateDateValue(attribute, e)}
                 />
               </AccordionDetails>
             ) : (
