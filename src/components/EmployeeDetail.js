@@ -31,10 +31,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
-  error: {
-    color: "red",
-    marginLeft: "15px",
-  },
   date: {
     minWidth: "15%",
   },
@@ -245,18 +241,16 @@ const EmployeeDetail = () => {
                     variant="outlined"
                     InputLabelProps={{ shrink: true }}
                     onKeyDown={(e) => updateEmployee(attribute, e)}
+                    helperText={
+                      errorMessage !== {} &&
+                      Object.keys(errorMessage)[0] === attribute
+                        ? errorMessage[attribute]
+                        : ""
+                    }
+                    error={Object.keys(errorMessage)[0] === attribute}
                   />
                 )}
               </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {errorMessage !== {} &&
-            Object.keys(errorMessage)[0] === attribute ? (
-              <Typography className={classes.error}>
-                {errorMessage[attribute]}
-              </Typography>
             ) : (
               <></>
             )}
