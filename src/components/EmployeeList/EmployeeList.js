@@ -112,6 +112,7 @@ const EmployeeList = () => {
               </TableCell>
               <TableCell className={classes.headerCell}>Department</TableCell>
               <TableCell className={classes.headerCell}>Position</TableCell>
+              <TableCell className={classes.headerCell}>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -136,6 +137,7 @@ const EmployeeList = () => {
                     <TableCell>{employee.Email}</TableCell>
                     <TableCell>{employee.Department.name}</TableCell>
                     <TableCell>{employee.Position}</TableCell>
+                    <TableCell>{employee.Status}</TableCell>
                   </TableRow>
                 ))}
               </>
