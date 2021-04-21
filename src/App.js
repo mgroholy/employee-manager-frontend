@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TopBar from "./components/bars/TopBar";
 import SideBar from "./components/bars/SideBar";
-import EmployeeList from "./components/EmployeeList";
+import EmployeeList from "./components/EmployeeList/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddEmployee from "./components/AddEmployee/AddEmployee";
