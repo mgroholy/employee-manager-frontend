@@ -28,11 +28,11 @@ const useStyles = makeStyles(() => ({
     fontSize: "1.2rem",
     fontWeight: "bold",
   },
-  formControl: {
-    minWidth: "150px",
-  },
   tableRow: {
     cursor: "pointer",
+  },
+  errorMessage: {
+    color: "red",
   },
 }));
 
@@ -40,7 +40,10 @@ const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [userInput, setUserInput] = useState("");
-  const [inputError, setInputError] = useState("");
+  const [error, setError] = useState("");
+  const [radioOption, setRadioOption] = useState("Name");
+  const [departmentOption, setDepartmentOption] = useState("all");
+  const [showInactive, setShowInactive] = useState(false);
 
   const classes = useStyles();
 
@@ -57,12 +60,17 @@ const EmployeeList = () => {
   };
 
   const filterByInput = async (input) => {
-    const url = `${EMPLOYEES_REST_API_URL}/employees?${input.type}=${input.value}`;
+    const url = `${EMPLOYEES_REST_API_URL}/employees?${
+      userInput !== ""
+        ? `${radioOption.toLowerCase()}=${userInput}`
+        : `department=${departmentOption}`
+    }${showInactive === true ? `&showInactive=${showInactive}` : ""}`;
+    console.log(url);
     try {
       const response = await axios.get(url);
       setEmployees(response.data);
     } catch (error) {
-      setInputError(error.response.data.message);
+      setError(error.response.data.message);
     }
   };
 
@@ -71,16 +79,25 @@ const EmployeeList = () => {
     fetchEmployees();
   }, []);
 
+  useEffect(() => {
+    filterByInput();
+  }, [departmentOption, showInactive]);
+
   return (
     <Container>
       <EmployeeFilter
         departments={departments}
-        formControlClass={classes.formControl}
         filter={filterByInput}
-        inputError={inputError}
-        setInputError={setInputError}
+        error={error}
+        setError={setError}
         userInput={userInput}
         setUserInput={setUserInput}
+        radioOption={radioOption}
+        setRadioOption={setRadioOption}
+        departmentOption={departmentOption}
+        setDepartmentOption={setDepartmentOption}
+        showInactive={showInactive}
+        setShowInactive={setShowInactive}
       />
 
       <TableContainer component={Paper} elevation={2}>
@@ -95,22 +112,36 @@ const EmployeeList = () => {
               </TableCell>
               <TableCell className={classes.headerCell}>Department</TableCell>
               <TableCell className={classes.headerCell}>Position</TableCell>
+              <TableCell className={classes.headerCell}>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees.map((employee) => (
-              <TableRow
-                key={employee.ID}
-                onClick={() => history.push(`/employees/${employee.ID}`)}
-                className={classes.tableRow}
-              >
-                <TableCell>{employee.Name}</TableCell>
+            {error !== "" ? (
+              <>
+                <TableRow>
+                  <TableCell className={classes.errorMessage}>
+                    {error}
+                  </TableCell>
+                </TableRow>
+              </>
+            ) : (
+              <>
+                {employees.map((employee) => (
+                  <TableRow
+                    key={employee.ID}
+                    onClick={() => history.push(`/employees/${employee.ID}`)}
+                    className={classes.tableRow}
+                  >
+                    <TableCell>{employee.Name}</TableCell>
 
-                <TableCell>{employee.Email}</TableCell>
-                <TableCell>{employee.Department.name}</TableCell>
-                <TableCell>{employee.Position}</TableCell>
-              </TableRow>
-            ))}
+                    <TableCell>{employee.Email}</TableCell>
+                    <TableCell>{employee.Department.name}</TableCell>
+                    <TableCell>{employee.Position}</TableCell>
+                    <TableCell>{employee.Status}</TableCell>
+                  </TableRow>
+                ))}
+              </>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
