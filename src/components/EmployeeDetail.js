@@ -100,26 +100,28 @@ const EmployeeDetail = () => {
     }
   };
 
-  const updateDateValue = async (attribute, e) => {
+  const sendUpdate = async () => {
     const url = EMPLOYEE_REST_API_URL + id + "/update";
-    const selected = e.target.value;
-    employee[attribute] = selected;
     await axios.put(url, employee);
     setHasUpdate(!hasUpdate);
   };
 
-  const updateDropdownValue = async (attribute, e) => {
+  const updateDateValue = (attribute, e) => {
+    const selected = e.target.value;
+    employee[attribute] = selected;
+    sendUpdate();
+  };
+
+  const updateDropdownValue = (attribute, e) => {
     if (attribute === "Status") setStatus("ACTIVE");
     else {
       const selected = e.target.dataset.value;
-      const url = EMPLOYEE_REST_API_URL + id + "/update";
       employee[attribute] = selected;
-      await axios.put(url, employee);
-      setHasUpdate(!hasUpdate);
+      sendUpdate();
     }
   };
 
-  const updateStatus = async () => {
+  const updateStatus = () => {
     if (employee.Status === "ACTIVE") {
       employee["Date of termination"] = terminationDate;
       employee["Status"] = "INACTIVE";
@@ -127,10 +129,7 @@ const EmployeeDetail = () => {
       employee["Status"] = status;
       employee["Date of termination"] = null;
     }
-
-    const url = EMPLOYEE_REST_API_URL + id + "/update";
-    await axios.put(url, employee);
-    setHasUpdate(!hasUpdate);
+    sendUpdate();
   };
 
   const isSpecialField = (attribute) => {
