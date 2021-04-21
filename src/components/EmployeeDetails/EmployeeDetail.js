@@ -136,6 +136,7 @@ const EmployeeDetail = () => {
       "Date of birth",
       "Clearance level",
       "Date of termination",
+      "Date of hire",
     ];
     return specialFields.includes(attribute);
   };
@@ -186,6 +187,7 @@ const EmployeeDetail = () => {
         );
       case "Date of termination":
       case "Date of birth":
+      case "Date of hire":
         return (
           <TextField
             className={classes.date}
