@@ -144,6 +144,67 @@ const EmployeeDetail = () => {
     return specialFields.includes(attribute);
   };
 
+  const isModifiableField = (attribute) => {
+    return attribute !== "ID" && employee[attribute] !== null;
+  };
+
+  const renderSpecialUpdateField = (attribute) => {
+    switch (attribute) {
+      case "Department":
+      case "Clearance level":
+        return (
+          <Dropdown
+            type={attribute}
+            onDropdownClick={(e) => updateDropdownValue(attribute, e)}
+          />
+        );
+      case "Status":
+        return (
+          <>
+            {employee.Status === "ACTIVE" ? (
+              <TextField
+                className={classes.date}
+                label="Date of termination:"
+                variant="outlined"
+                type="date"
+                defaultValue={terminationDate}
+                InputLabelProps={{ shrink: true }}
+                onChange={(e) => setTerminationDate(e.target.value)}
+              />
+            ) : (
+              <Dropdown
+                type={attribute}
+                onDropdownClick={(e) => updateDropdownValue(attribute, e)}
+              />
+            )}
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<Archive />}
+              className={classes.button}
+              onClick={updateStatus}
+            >
+              Set
+            </Button>
+          </>
+        );
+      case "Date of termination":
+      case "Date of birth":
+        return (
+          <TextField
+            className={classes.date}
+            label={"New " + attribute + ":"}
+            variant="outlined"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            onChange={(e) => updateDateValue(attribute, e)}
+          />
+        );
+      default:
+        throw new Error("Case " + attribute + " not found.");
+    }
+  };
+
   return (
     <div className={classes.root}>
       {isError ? (
@@ -162,13 +223,7 @@ const EmployeeDetail = () => {
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
             <AccordionSummary
-              expandIcon={
-                attribute !== "ID" && employee[attribute] !== null ? (
-                  <Update />
-                ) : (
-                  <></>
-                )
-              }
+              expandIcon={isModifiableField(attribute) ? <Update /> : <></>}
             >
               <Typography className={classes.attributeName}>
                 {attribute}
@@ -180,90 +235,18 @@ const EmployeeDetail = () => {
               </Typography>
             </AccordionSummary>
 
-            {!isSpecialField(attribute) ? (
+            {isModifiableField(attribute) ? (
               <AccordionDetails>
-                <TextField
-                  label={"New " + attribute}
-                  variant="outlined"
-                  InputLabelProps={{ shrink: true }}
-                  onKeyDown={(e) => updateEmployee(attribute, e)}
-                />
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Date of birth" ? (
-              <AccordionDetails>
-                <TextField
-                  className={classes.date}
-                  label="New Date of birth:"
-                  variant="outlined"
-                  type="date"
-                  defaultValue="1985-01-01"
-                  InputLabelProps={{ shrink: true }}
-                  onChange={(e) => updateDateValue(attribute, e)}
-                />
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Department" || attribute === "Clearance level" ? (
-              <AccordionDetails>
-                <Dropdown
-                  type={attribute}
-                  onDropdownClick={(e) => updateDropdownValue(attribute, e)}
-                />
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Status" ? (
-              <AccordionDetails>
-                {employee.Status === "ACTIVE" ? (
-                  <TextField
-                    className={classes.date}
-                    label="Date of termination:"
-                    variant="outlined"
-                    type="date"
-                    defaultValue={terminationDate}
-                    InputLabelProps={{ shrink: true }}
-                    onChange={(e) => setTerminationDate(e.target.value)}
-                  />
+                {isSpecialField(attribute) ? (
+                  renderSpecialUpdateField(attribute)
                 ) : (
-                  <Dropdown
-                    type={attribute}
-                    onDropdownClick={(e) => updateDropdownValue(attribute, e)}
+                  <TextField
+                    label={"New " + attribute}
+                    variant="outlined"
+                    InputLabelProps={{ shrink: true }}
+                    onKeyDown={(e) => updateEmployee(attribute, e)}
                   />
                 )}
-
-                <Button
-                  variant="contained"
-                  size="small"
-                  startIcon={<Archive />}
-                  className={classes.button}
-                  onClick={updateStatus}
-                >
-                  Set
-                </Button>
-              </AccordionDetails>
-            ) : (
-              <></>
-            )}
-
-            {attribute === "Date of termination" &&
-            employee[attribute] !== null ? (
-              <AccordionDetails>
-                <TextField
-                  className={classes.date}
-                  label="New Date of termination:"
-                  variant="outlined"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  onChange={(e) => updateDateValue(attribute, e)}
-                />
               </AccordionDetails>
             ) : (
               <></>
