@@ -28,11 +28,11 @@ const useStyles = makeStyles(() => ({
     fontSize: "1.2rem",
     fontWeight: "bold",
   },
-  formControl: {
-    minWidth: "150px",
-  },
   tableRow: {
     cursor: "pointer",
+  },
+  errorMessage: {
+    color: "red",
   },
 }));
 
@@ -41,7 +41,7 @@ const EmployeeList = () => {
   const [departments, setDepartments] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [error, setError] = useState("");
-  const [radioOption, setRadioOption] = useState("name");
+  const [radioOption, setRadioOption] = useState("Name");
   const [departmentOption, setDepartmentOption] = useState("all");
   const [showInactive, setShowInactive] = useState(false);
 
@@ -87,7 +87,6 @@ const EmployeeList = () => {
     <Container>
       <EmployeeFilter
         departments={departments}
-        formControlClass={classes.formControl}
         filter={filterByInput}
         error={error}
         setError={setError}
@@ -119,7 +118,9 @@ const EmployeeList = () => {
             {error !== "" ? (
               <>
                 <TableRow>
-                  <TableCell>{error}</TableCell>
+                  <TableCell className={classes.errorMessage}>
+                    {error}
+                  </TableCell>
                 </TableRow>
               </>
             ) : (
