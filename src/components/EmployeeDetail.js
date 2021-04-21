@@ -192,6 +192,7 @@ const EmployeeDetail = () => {
             label={"New " + attribute + ":"}
             variant="outlined"
             type="date"
+            defaultValue={employee[attribute]}
             InputLabelProps={{ shrink: true }}
             onChange={(e) => updateDateValue(attribute, e)}
           />
