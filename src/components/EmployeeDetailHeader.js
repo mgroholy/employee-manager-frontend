@@ -53,6 +53,7 @@ const EmployeeDetailHeader = (props) => {
         <TextField
           label="Name"
           onKeyDown={(e) => props.enterPressed("Name", e)}
+          helperText={"Press Enter to save"}
         ></TextField>
       ) : (
         <h1
