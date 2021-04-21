@@ -4,28 +4,17 @@ import {
   Container,
   FormControl,
   Paper,
-  TextField,
   Typography,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormHelperText,
-  makeStyles,
 } from "@material-ui/core";
-import { spacing } from "@material-ui/system";
-import { sizing } from "@material-ui/system";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
-const useStyles = makeStyles(() => ({
-  formErrorText: {
-    color: "red",
-  },
-}));
+import AddEmployeeDropDown from "./AddEmployeeDropDown";
+import AddEmployeeTextField from "./AddEmployeeTextField";
 
 const AddEmployee = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
+  const LEVELS_REST_API_URL = "http://localhost:8080/levels";
 
   const [employee, setEmployee] = useState({
     name: "",
@@ -48,8 +37,7 @@ const AddEmployee = () => {
   });
 
   const [departments, setDepartments] = useState([]);
-
-  const classes = useStyles();
+  const [levels, setLevels] = useState([]);
 
   const sendEmployee = () => {
     const employeeData = {
@@ -141,7 +129,21 @@ const AddEmployee = () => {
     setDepartments(response.data);
   };
 
-  useEffect(() => fetchDepartments(), []);
+  const fetchLevels = async () => {
+    const response = await axios.get(LEVELS_REST_API_URL);
+    let levels = response.data;
+    let levelObjects = [];
+    for (let i = 0; i < levels.length; i++) {
+      let level = { id: i, name: levels[i] };
+      levelObjects.push(level);
+    }
+    setLevels(levelObjects);
+  };
+
+  useEffect(() => {
+    fetchDepartments();
+    fetchLevels();
+  }, []);
 
   return (
     <Container>
@@ -152,105 +154,62 @@ const AddEmployee = () => {
           <FormControl fullWidth={true}>
             <form>
               <Box paddingTop={3}>
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
+                <AddEmployeeTextField
                   label="Employee name:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setError({ ...error, name: "" });
-                    setEmployee({ ...employee, name: event.target.value });
-                  }}
-                  helperText={error.name}
-                  error={error.name !== ""}
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"name"}
+                  setEmployee={setEmployee}
                 />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
+                <AddEmployeeTextField
                   label="Email:"
-                  variant="outlined"
-                  required={true}
-                  type="email"
-                  onChange={(event) => {
-                    setError({ ...error, email: "" });
-                    setEmployee({ ...employee, email: event.target.value });
-                  }}
-                  helperText={error.email}
-                  error={error.email !== ""}
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"email"}
+                  setEmployee={setEmployee}
                 />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
+                <AddEmployeeTextField
                   label="Date of birth:"
-                  variant="outlined"
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"dateOfBirth"}
+                  setEmployee={setEmployee}
                   type="date"
                   InputLabelProps={{ shrink: true }}
-                  required={true}
-                  onChange={(event) => {
-                    setError({ ...error, dateOfBirth: "" });
-                    setEmployee({
-                      ...employee,
-                      dateOfBirth: event.target.value,
-                    });
-                  }}
-                  helperText={error.dateOfBirth}
-                  error={error.dateOfBirth !== ""}
                 />
-                <FormControl
-                  variant="outlined"
-                  fullWidth={true}
-                  margin={"normal"}
-                >
-                  <InputLabel id="department-select-label">
-                    Department
-                  </InputLabel>
-                  <Select
-                    labelId="department-select-label"
-                    id="department-select"
-                    defaultValue={""}
-                    error={error.department !== ""}
-                    onChange={(event) => {
-                      setError({ ...error, department: "" });
-                      setEmployee({
-                        ...employee,
-                        department: event.target.value,
-                      });
-                    }}
-                    label="Department"
-                  >
-                    {departments.map((department) => (
-                      <MenuItem key={department.id} value={department.name}>
-                        {department.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  <FormHelperText className={classes.formErrorText}>
-                    {error.department}
-                  </FormHelperText>
-                </FormControl>
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
+                <AddEmployeeDropDown
+                  label="Department:"
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"department"}
+                  setEmployee={setEmployee}
+                  selectOptions={departments}
+                />
+
+                <AddEmployeeTextField
                   label="Phone number:"
-                  variant="outlined"
-                  required={true}
-                  type="tel"
-                  onChange={(event) => {
-                    setError({ ...error, phoneNumber: "" });
-                    setEmployee({
-                      ...employee,
-                      phoneNumber: event.target.value,
-                    });
-                  }}
-                  helperText={error.phoneNumber}
-                  error={error.phoneNumber !== ""}
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"phoneNumber"}
+                  setEmployee={setEmployee}
                 />
-                <TextField
+
+                <AddEmployeeDropDown
+                  label="Clearance level:"
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"clearanceLevel"}
+                  setEmployee={setEmployee}
+                  selectOptions={levels}
+                />
+
+                {/* <TextField
                   margin={"normal"}
                   fullWidth={true}
                   id="outlined-basic"
@@ -266,20 +225,14 @@ const AddEmployee = () => {
                   }}
                   helperText={error.clearanceLevel}
                   error={error.clearanceLevel !== ""}
-                />
-                <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
+                /> */}
+                <AddEmployeeTextField
                   label="Position:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setError({ ...error, position: "" });
-                    setEmployee({ ...employee, position: event.target.value });
-                  }}
-                  helperText={error.position}
-                  error={error.position !== ""}
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"position"}
+                  setEmployee={setEmployee}
                 />
                 <Button
                   variant="outlined"

@@ -10,8 +10,6 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import AddDepartment from "./AddDepartment";
