@@ -20,6 +20,7 @@ const AddEmployee = () => {
     name: "",
     email: "",
     dateOfBirth: "",
+    dateOfHire: "",
     department: "",
     position: "",
     clearanceLevel: "",
@@ -30,6 +31,7 @@ const AddEmployee = () => {
     name: "",
     email: "",
     dateOfBirth: "",
+    dateOfHire: "",
     department: "",
     position: "",
     clearanceLevel: "",
@@ -46,6 +48,7 @@ const AddEmployee = () => {
       Department: employee.department,
       "Phone number": employee.phoneNumber,
       "Date of birth": employee.dateOfBirth,
+      "Date of hire": employee.dateOfHire,
       "Clearance level": employee.clearanceLevel.toUpperCase(),
       Position: employee.position,
     };
@@ -83,6 +86,10 @@ const AddEmployee = () => {
       fieldErrors = { ...fieldErrors, dateOfBirth: "Required field." };
       valid = false;
     }
+    if (data["Date of hire"] === "") {
+      fieldErrors = { ...fieldErrors, dateOfHire: "Required field." };
+      valid = false;
+    }
     if (data["Clearance level"] === "") {
       fieldErrors = { ...fieldErrors, clearanceLevel: "Required field." };
       valid = false;
@@ -101,7 +108,7 @@ const AddEmployee = () => {
       } else if (data["Phone number"].length !== 11) {
         fieldErrors = {
           ...fieldErrors,
-          phoneNumber: "Invalid input. Phone number wrong lenght.",
+          phoneNumber: "Invalid input. Phone number wrong length.",
         };
         valid = false;
       }
@@ -233,6 +240,16 @@ const AddEmployee = () => {
                   employee={employee}
                   fieldName={"position"}
                   setEmployee={setEmployee}
+                />
+                <AddEmployeeTextField
+                  label="Date of hire:"
+                  setError={setError}
+                  error={error}
+                  employee={employee}
+                  fieldName={"dateOfHire"}
+                  setEmployee={setEmployee}
+                  type="date"
+                  InputLabelProps={{ shrink: true }}
                 />
                 <Button
                   variant="outlined"
