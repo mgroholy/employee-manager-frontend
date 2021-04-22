@@ -47,8 +47,14 @@ const DepartmentList = () => {
 
   const deleteDepartment = async (departmentId) => {
     console.log("delete", departmentId);
-    await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`);
-    fetchDepartments();
+    try {
+      await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`);
+      alert("Department has been deleted.");
+    } catch {
+      alert("An unexpected error occured.");
+    } finally {
+      fetchDepartments();
+    }
   };
 
   const classes = useStyles();
