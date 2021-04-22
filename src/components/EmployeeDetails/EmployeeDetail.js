@@ -73,59 +73,57 @@ const EmployeeDetail = () => {
     fetchEmployee();
   }, [id, hasUpdate]);
 
-  const updateEmployee = async (attribute, e) => {
-    const isEnterPressed = e.keyCode === 13;
-    if (isEnterPressed) {
-      const input = e.target.value;
-      const url = EMPLOYEE_REST_API_URL + id + "/update";
-      employee[attribute] = input;
-      const response = await axios
-        .put(url, employee)
-        .catch((error) => error.response);
-
-      if (response.status === 400) {
-        if (response.data === "")
-          setErrorMessage({ [attribute]: "Invalid input." });
-        else {
-          const message = response.data.errors[0].defaultMessage;
-          setErrorMessage({ [attribute]: message });
-        }
-      } else setErrorMessage({});
-
-      setHasUpdate(!hasUpdate);
+  const getFormattedData = (attribute, data) => {
+    if (attribute === "Status") {
+      return {
+        [attribute]: data[0],
+        "Date of termination": data[1],
+      };
+    } else {
+      return { [attribute]: data };
     }
   };
 
-  const sendUpdate = async () => {
-    const url = EMPLOYEE_REST_API_URL + id + "/update";
-    await axios.put(url, employee);
+  const sendUpdate = async (attribute, data) => {
+    const url = EMPLOYEE_REST_API_URL + id + "/partial-update";
+
+    try {
+      const update = getFormattedData(attribute, data);
+      await axios.patch(url, update);
+    } catch (error) {
+      setErrorMessage({ [attribute]: error.response.data.message });
+    }
+
     setHasUpdate(!hasUpdate);
+  };
+
+  const updateTextFieldValue = async (attribute, e) => {
+    const isEnterPressed = e.keyCode === 13;
+    if (isEnterPressed) {
+      const input = e.target.value;
+      sendUpdate(attribute, input);
+    }
   };
 
   const updateDateValue = (attribute, e) => {
     const selected = e.target.value;
-    employee[attribute] = selected;
-    sendUpdate();
+    sendUpdate(attribute, selected);
   };
 
   const updateDropdownValue = (attribute, e) => {
     if (attribute === "Status") setStatus("ACTIVE");
     else {
       const selected = e.target.dataset.value;
-      employee[attribute] = selected;
-      sendUpdate();
+      sendUpdate(attribute, selected);
     }
   };
 
   const updateStatus = () => {
     if (employee.Status === "ACTIVE") {
-      employee["Date of termination"] = terminationDate;
-      employee["Status"] = "INACTIVE";
+      sendUpdate("Status", ["INACTIVE", terminationDate]);
     } else {
-      employee["Status"] = status;
-      employee["Date of termination"] = null;
+      sendUpdate("Status", [status, null]);
     }
-    sendUpdate();
   };
 
   const isSpecialField = (attribute) => {
@@ -214,7 +212,7 @@ const EmployeeDetail = () => {
         <EmployeeDetailHeader
           employeeName={employee.Name}
           employeeId={employee.ID}
-          enterPressed={updateEmployee}
+          enterPressed={updateTextFieldValue}
           status={employee.Status}
         />
       )}
@@ -243,7 +241,7 @@ const EmployeeDetail = () => {
                     label={"New " + attribute}
                     variant="outlined"
                     InputLabelProps={{ shrink: true }}
-                    onKeyDown={(e) => updateEmployee(attribute, e)}
+                    onKeyDown={(e) => updateTextFieldValue(attribute, e)}
                     helperText={
                       errorMessage !== {} &&
                       Object.keys(errorMessage)[0] === attribute
