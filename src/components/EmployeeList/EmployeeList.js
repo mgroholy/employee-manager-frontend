@@ -59,7 +59,7 @@ const EmployeeList = () => {
     setDepartments(response.data);
   };
 
-  const filterByInput = async (input) => {
+  const filterByInput = async () => {
     const url = `${EMPLOYEES_REST_API_URL}/employees?${
       userInput !== ""
         ? `${radioOption.toLowerCase()}=${userInput}`

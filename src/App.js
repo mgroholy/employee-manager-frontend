@@ -8,7 +8,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AddEmployee from "./components/AddEmployee/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
-import DepartmentList from "./components/DepartmentList";
+import DepartmentList from "./components/DepartmentList/DepartmentList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
