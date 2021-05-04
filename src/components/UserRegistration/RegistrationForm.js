@@ -82,6 +82,7 @@ const RegistrationForm = ({ handleClose }) => {
         type={isPasswordHidden ? "password" : "text"}
         required
         value={password}
+        autoComplete="new-password"
         onChange={(e) => setPassword(e.target.value)}
         InputProps={{
           endAdornment: (
@@ -99,6 +100,7 @@ const RegistrationForm = ({ handleClose }) => {
         type={isPasswordHidden ? "password" : "text"}
         required
         value={confirmedPassword}
+        autoComplete="new-password"
         onChange={(e) => setConfirmedPassword(e.target.value)}
         InputProps={{
           endAdornment: (
