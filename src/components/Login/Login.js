@@ -11,6 +11,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import CustomTextField from "../AddEmployee/CustomTextField";
+import ModalDialog from "../UserRegistration/ModalDialog";
 
 const useStyles = makeStyles(() => ({
   buttonGroup: {
@@ -28,6 +29,7 @@ const Login = () => {
 
   const history = useHistory();
 
+  const [open, setOpen] = useState(false);
   const [inputData, setInputData] = useState({ email: "", password: "" });
   const [error, setError] = useState({ email: "", password: "" });
 
@@ -76,6 +78,14 @@ const Login = () => {
     return valid;
   };
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Container>
       <Paper elevation={2}>
@@ -117,10 +127,11 @@ const Login = () => {
               variant="outlined"
               color="default"
               type="submit"
-              onClick={(event) => {}}
+              onClick={handleOpen}
             >
               Sign Up
             </Button>
+            <ModalDialog open={open} handleClose={handleClose} />
           </Box>
         </Box>
       </Paper>
