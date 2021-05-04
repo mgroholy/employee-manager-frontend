@@ -5,7 +5,7 @@ import TopBar from "./components/bars/TopBar";
 import SideBar from "./components/bars/SideBar";
 import EmployeeList from "./components/EmployeeList/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
-import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
 import AddEmployee from "./components/AddEmployee/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
 import DepartmentList from "./components/DepartmentList/DepartmentList";
