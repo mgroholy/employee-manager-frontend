@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -9,8 +9,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Add from "@material-ui/icons/Add";
 import AccountTree from "@material-ui/icons/AccountTree";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Divider from "@material-ui/core/Divider";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../UserContext";
 
 const drawerWidth = 250;
 
@@ -34,6 +36,7 @@ const useStyles = makeStyles(() => ({
 
 const SideBar = () => {
   const classes = useStyles();
+  const { user } = useContext(UserContext);
 
   return (
     <div>
@@ -47,6 +50,13 @@ const SideBar = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
+            <ListItem>
+              <ListItemIcon style={{ color: "white" }}>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary={user} />
+            </ListItem>
+
             <ListItem
               button
               component={NavLink}
