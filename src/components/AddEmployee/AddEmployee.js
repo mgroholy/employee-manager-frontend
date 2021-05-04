@@ -215,24 +215,6 @@ const AddEmployee = () => {
                   setEmployee={setEmployee}
                   selectOptions={levels}
                 />
-
-                {/* <TextField
-                  margin={"normal"}
-                  fullWidth={true}
-                  id="outlined-basic"
-                  label="Clearance Level:"
-                  variant="outlined"
-                  required={true}
-                  onChange={(event) => {
-                    setError({ ...error, clearanceLevel: "" });
-                    setEmployee({
-                      ...employee,
-                      clearanceLevel: event.target.value,
-                    });
-                  }}
-                  helperText={error.clearanceLevel}
-                  error={error.clearanceLevel !== ""}
-                /> */}
                 <AddEmployeeTextField
                   label="Position:"
                   setError={setError}
