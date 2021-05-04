@@ -10,9 +10,9 @@ import AddEmployee from "./components/AddEmployee/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
 import DepartmentList from "./components/DepartmentList/DepartmentList";
 import Login from "./components/Login/Login";
-import { UserContext } from "./components/UserContext";
-import PrivateRoute from "./components/PrivateRoute";
-import CurrentUser from "./components/CurrentUser";
+import { UserContext } from "./components/Security/UserContext";
+import PrivateRoute from "./components/Security/PrivateRoute";
+import CurrentUser from "./components/Security/CurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {

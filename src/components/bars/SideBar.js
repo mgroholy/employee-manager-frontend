@@ -12,7 +12,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Divider from "@material-ui/core/Divider";
 import { NavLink } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../Security/UserContext";
 
 const drawerWidth = 250;
 
