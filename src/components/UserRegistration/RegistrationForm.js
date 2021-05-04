@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { makeStyles, Typography } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import {
+  IconButton,
+  InputAdornment,
+  makeStyles,
+  Typography,
+  TextField,
+  Button,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const USER_REST_API_URL = "http://localhost:8080/sign-up";
 
@@ -32,11 +38,18 @@ const RegistrationForm = ({ handleClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [message, setMessage] = useState("");
+
+  const passwordMatch = () => password === confirmedPassword;
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordHidden(!isPasswordHidden);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendUserData();
+    passwordMatch() ? sendUserData() : setMessage("Passwords do not match!");
   };
 
   const sendUserData = async () => {
@@ -66,18 +79,36 @@ const RegistrationForm = ({ handleClose }) => {
       <TextField
         label="Password"
         variant="filled"
-        type="password"
+        type={isPasswordHidden ? "password" : "text"}
         required
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={togglePasswordVisibility}>
+                {isPasswordHidden ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
       <TextField
         label="Confirm password"
         variant="filled"
-        type="password"
+        type={isPasswordHidden ? "password" : "text"}
         required
         value={confirmedPassword}
         onChange={(e) => setConfirmedPassword(e.target.value)}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={togglePasswordVisibility}>
+                {isPasswordHidden ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
       <div className={classes.message}>{message}</div>
       <div>
