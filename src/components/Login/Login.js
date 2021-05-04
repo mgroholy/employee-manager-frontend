@@ -4,15 +4,31 @@ import {
   ButtonGroup,
   Container,
   FormControl,
+  makeStyles,
   Paper,
   TextField,
   Typography,
 } from "@material-ui/core";
+import { findByLabelText } from "@testing-library/dom";
 import axios from "axios";
 import React, { useState } from "react";
+import { useHistory } from "react-router";
+
+const useStyles = makeStyles(() => ({
+  buttonGroup: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  button: {
+    margin: "10px",
+  },
+}));
 
 const Login = () => {
+  const classes = useStyles();
   const SIGN_IN_REST_API_URL = "http://localhost:8080/sign-in";
+
+  const history = useHistory();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +43,7 @@ const Login = () => {
           password: password,
         });
         console.log(response);
+        history.push("/");
       } catch (apiError) {
         console.log(error);
         setError({
@@ -96,12 +113,11 @@ const Login = () => {
               helperText={error.password}
             />
           </FormControl>
-          <ButtonGroup
-            orientation="vertical"
-            variant="outlined"
-            color="secondary"
-          >
+          <Box className={classes.buttonGroup} orientation="horizontal">
             <Button
+              className={classes.button}
+              variant="outlined"
+              color="secondary"
               type="submit"
               onClick={() => {
                 sendLoginForm();
@@ -110,6 +126,9 @@ const Login = () => {
               Login
             </Button>
             <Button
+              className={classes.button}
+              variant="outlined"
+              color="default"
               type="submit"
               onClick={(event) => {
                 console.log(email, password);
@@ -117,7 +136,7 @@ const Login = () => {
             >
               Sign Up
             </Button>
-          </ButtonGroup>
+          </Box>
         </Box>
       </Paper>
     </Container>
