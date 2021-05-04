@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import React from "react";
 
-const AddEmployeeTextField = ({
+const CustomTextField = ({
   label,
   setError,
   setEmployee,
@@ -31,4 +31,4 @@ const AddEmployeeTextField = ({
   );
 };
 
-export default AddEmployeeTextField;
+export default CustomTextField;

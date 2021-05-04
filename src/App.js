@@ -5,10 +5,11 @@ import TopBar from "./components/bars/TopBar";
 import SideBar from "./components/bars/SideBar";
 import EmployeeList from "./components/EmployeeList/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
 import AddEmployee from "./components/AddEmployee/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
 import DepartmentList from "./components/DepartmentList/DepartmentList";
+import Login from "./components/Login/Login";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,23 +23,24 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const location = useLocation();
 
   return (
-    <Router>
-      <div className={classes.root}>
-        <CssBaseline />
-        <TopBar />
-        <SideBar />
-        <main className={classes.content}>
-          <Toolbar />
-          <Route exact path="/" component={EmployeeList} />
-          <Route exact path="/employees" component={EmployeeList} />
-          <Route exact path="/add-employee" component={AddEmployee} />
-          <Route exact path="/employees/:id" component={EmployeeDetail} />
-          <Route exact path="/departments" component={DepartmentList} />
-        </main>
-      </div>
-    </Router>
+    <div className={classes.root}>
+      <CssBaseline />
+      <TopBar />
+      {location.pathname !== "/sign-in" && <SideBar />}
+
+      <main className={classes.content}>
+        <Toolbar />
+        <Route exact path="/" component={EmployeeList} />
+        <Route exact path="/employees" component={EmployeeList} />
+        <Route exact path="/add-employee" component={AddEmployee} />
+        <Route exact path="/employees/:id" component={EmployeeDetail} />
+        <Route exact path="/departments" component={DepartmentList} />
+        <Route exact path="/sign-in" component={Login} />
+      </main>
+    </div>
   );
 }
 
