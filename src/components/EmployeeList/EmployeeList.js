@@ -50,12 +50,16 @@ const EmployeeList = () => {
   const history = useHistory();
 
   const fetchEmployees = async () => {
-    const response = await axios.get(EMPLOYEES_REST_API_URL);
+    const response = await axios.get(EMPLOYEES_REST_API_URL, {
+      withCredentials: true,
+    });
     setEmployees(response.data);
   };
 
   const fetchDepartments = async () => {
-    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    const response = await axios.get(DEPARTMENTS_REST_API_URL, {
+      withCredentials: true,
+    });
     setDepartments(response.data);
   };
 
@@ -67,7 +71,7 @@ const EmployeeList = () => {
     }${showInactive === true ? `&showInactive=${showInactive}` : ""}`;
     console.log(url);
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(url, { withCredentials: true });
       setEmployees(response.data);
     } catch (error) {
       setError(error.response.data.message);

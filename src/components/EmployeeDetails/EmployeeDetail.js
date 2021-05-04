@@ -63,7 +63,9 @@ const EmployeeDetail = () => {
     const fetchEmployee = async () => {
       setIsError(false);
       try {
-        const response = await axios.get(EMPLOYEE_REST_API_URL + id);
+        const response = await axios.get(EMPLOYEE_REST_API_URL + id, {
+          withCredentials: true,
+        });
         setEmployee(response.data);
       } catch (error) {
         setIsError(true);
@@ -89,7 +91,7 @@ const EmployeeDetail = () => {
 
     try {
       const update = getFormattedData(attribute, data);
-      await axios.patch(url, update);
+      await axios.patch(url, update, { withCredentials: true });
     } catch (error) {
       setErrorMessage({ [attribute]: error.response.data.message });
     }

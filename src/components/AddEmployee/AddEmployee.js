@@ -123,7 +123,8 @@ const AddEmployee = () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/employees",
-        employee
+        employee,
+        { withCredentials: true }
       );
       history.push(`/employees/${response.data.ID}`);
     } catch (apiError) {
@@ -132,12 +133,16 @@ const AddEmployee = () => {
   };
 
   const fetchDepartments = async () => {
-    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    const response = await axios.get(DEPARTMENTS_REST_API_URL, {
+      withCredentials: true,
+    });
     setDepartments(response.data);
   };
 
   const fetchLevels = async () => {
-    const response = await axios.get(LEVELS_REST_API_URL);
+    const response = await axios.get(LEVELS_REST_API_URL, {
+      withCredentials: true,
+    });
     let levels = response.data;
     let levelObjects = [];
     for (let i = 0; i < levels.length; i++) {

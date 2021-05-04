@@ -29,7 +29,7 @@ const EmployeeDetailHeader = (props) => {
         "Delete employee with ID " + props.employeeId + "?"
       );
       if (answer) {
-        await axios.delete(url);
+        await axios.delete(url, { withCredentials: true });
         alert(
           "Employee with ID " +
             props.employeeId +
