@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DepartmentList = () => {
-  const DEPARTMENTS_REST_API_URL = "http://localhost:8080//departments";
+  const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
   const [departments, setDepartments] = useState([]);
 

@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import EmployeeFilter from "./EmployeeFilter";
 
-const EMPLOYEES_REST_API_URL = "http://localhost:8080/";
+const EMPLOYEES_REST_API_URL = "http://localhost:8080";
 const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
 const useStyles = makeStyles(() => ({
