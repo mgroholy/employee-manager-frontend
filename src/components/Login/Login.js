@@ -1,18 +1,16 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Container,
   FormControl,
   makeStyles,
   Paper,
-  TextField,
   Typography,
 } from "@material-ui/core";
-import { findByLabelText } from "@testing-library/dom";
 import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import CustomTextField from "../AddEmployee/CustomTextField";
 
 const useStyles = makeStyles(() => ({
   buttonGroup: {
@@ -30,22 +28,21 @@ const Login = () => {
 
   const history = useHistory();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [inputData, setInputData] = useState({ email: "", password: "" });
   const [error, setError] = useState({ email: "", password: "" });
 
   const sendLoginForm = async () => {
-    let validInput = validateLoginData(email, password);
+    let validInput = validateLoginData(inputData.email, inputData.password);
     if (validInput) {
       try {
         const response = await axios.post(SIGN_IN_REST_API_URL, {
-          email: email,
-          password: password,
+          email: inputData.email,
+          password: inputData.password,
         });
-        console.log(response);
-        history.push("/");
+        if (response.status === 200) {
+          history.push("/");
+        }
       } catch (apiError) {
-        console.log(error);
         setError({
           ...error,
           email: apiError.response.data.message,
@@ -85,32 +82,22 @@ const Login = () => {
         <Box p={5}>
           <Typography variant="h3">Login</Typography>
           <FormControl fullWidth={true}>
-            <TextField
+            <CustomTextField
               label="Email address"
-              variant="outlined"
-              required={true}
-              margin={"normal"}
-              id="outlined-basic"
-              onChange={(event) => {
-                setEmail(event.target.value);
-                setError({ ...error, email: "" });
-              }}
-              error={error.email !== "" ? true : false}
-              helperText={error.email}
+              setError={setError}
+              error={error}
+              fieldName="email"
+              setEmployee={setInputData}
+              employee={inputData}
             />
-            <TextField
+            <CustomTextField
               label="Password"
-              variant="outlined"
-              required={true}
-              margin={"normal"}
-              id="outlined-basic"
+              setError={setError}
+              error={error}
+              fieldName="password"
+              setEmployee={setInputData}
+              employee={inputData}
               type="password"
-              onChange={(event) => {
-                setPassword(event.target.value);
-                setError({ ...error, password: "" });
-              }}
-              error={error.password !== "" ? true : false}
-              helperText={error.password}
             />
           </FormControl>
           <Box className={classes.buttonGroup} orientation="horizontal">
@@ -130,9 +117,7 @@ const Login = () => {
               variant="outlined"
               color="default"
               type="submit"
-              onClick={(event) => {
-                console.log(email, password);
-              }}
+              onClick={(event) => {}}
             >
               Sign Up
             </Button>
