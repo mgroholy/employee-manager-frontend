@@ -10,7 +10,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import AddEmployeeDropDown from "./AddEmployeeDropDown";
-import AddEmployeeTextField from "./AddEmployeeTextField";
+import CustomTextField from "./CustomTextField";
 
 const AddEmployee = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
@@ -161,7 +161,7 @@ const AddEmployee = () => {
           <FormControl fullWidth={true}>
             <form>
               <Box paddingTop={3}>
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Employee name:"
                   setError={setError}
                   error={error}
@@ -169,7 +169,7 @@ const AddEmployee = () => {
                   fieldName={"name"}
                   setEmployee={setEmployee}
                 />
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Email:"
                   setError={setError}
                   error={error}
@@ -177,7 +177,7 @@ const AddEmployee = () => {
                   fieldName={"email"}
                   setEmployee={setEmployee}
                 />
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Date of birth:"
                   setError={setError}
                   error={error}
@@ -197,7 +197,7 @@ const AddEmployee = () => {
                   selectOptions={departments}
                 />
 
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Phone number:"
                   setError={setError}
                   error={error}
@@ -215,7 +215,7 @@ const AddEmployee = () => {
                   setEmployee={setEmployee}
                   selectOptions={levels}
                 />
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Position:"
                   setError={setError}
                   error={error}
@@ -223,7 +223,7 @@ const AddEmployee = () => {
                   fieldName={"position"}
                   setEmployee={setEmployee}
                 />
-                <AddEmployeeTextField
+                <CustomTextField
                   label="Date of hire:"
                   setError={setError}
                   error={error}
