@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
 const AddDepartment = ({ fetchDepartments }) => {
   const classes = useStyles();
 
-  const DEPARTMENTS_REST_API_URL = "http://localhost:8080//departments";
+  const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
   const [department, setDepartment] = useState({ name: "" });
   const [error, setError] = useState("");
@@ -25,7 +25,11 @@ const AddDepartment = ({ fetchDepartments }) => {
   const sendDepartment = async () => {
     if (department.name !== "") {
       try {
-        const response = await axios.post(DEPARTMENTS_REST_API_URL, department);
+        const response = await axios.post(
+          DEPARTMENTS_REST_API_URL,
+          department,
+          { withCredentials: true }
+        );
         console.log(response);
         fetchDepartments();
         toggleActiveForm();

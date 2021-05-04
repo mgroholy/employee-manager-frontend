@@ -40,7 +40,9 @@ const DepartmentList = () => {
   const [departments, setDepartments] = useState([]);
 
   const fetchDepartments = async () => {
-    const response = await axios.get(DEPARTMENTS_REST_API_URL);
+    const response = await axios.get(DEPARTMENTS_REST_API_URL, {
+      withCredentials: true,
+    });
     console.log(response);
     setDepartments(response.data);
   };
@@ -48,7 +50,9 @@ const DepartmentList = () => {
   const deleteDepartment = async (departmentId) => {
     console.log("delete", departmentId);
     try {
-      await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`);
+      await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`, {
+        withCredentials: true,
+      });
       alert("Department has been deleted.");
     } catch {
       alert("An unexpected error occured.");

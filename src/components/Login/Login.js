@@ -37,10 +37,14 @@ const Login = () => {
     let validInput = validateLoginData(inputData.email, inputData.password);
     if (validInput) {
       try {
-        const response = await axios.post(SIGN_IN_REST_API_URL, {
-          email: inputData.email,
-          password: inputData.password,
-        });
+        const response = await axios.post(
+          SIGN_IN_REST_API_URL,
+          {
+            email: inputData.email,
+            password: inputData.password,
+          },
+          { withCredentials: true }
+        );
         if (response.status === 200) {
           history.push("/");
         }
