@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
@@ -54,6 +54,7 @@ const RegistrationForm = ({ handleClose }) => {
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
+      <Typography variant="h4">Sign up</Typography>
       <TextField
         label="Email"
         variant="filled"
@@ -84,7 +85,7 @@ const RegistrationForm = ({ handleClose }) => {
           Cancel
         </Button>
         <Button type="submit" variant="outlined" color="secondary">
-          Sign Up
+          Submit
         </Button>
       </div>
     </form>
