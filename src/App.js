@@ -11,6 +11,7 @@ import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
 import DepartmentList from "./components/DepartmentList/DepartmentList";
 import Login from "./components/Login/Login";
 import { UserContext } from "./components/UserContext";
+import PrivateRoute from "./components/PrivateRoute";
 import CurrentUser from "./components/CurrentUser";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,11 +39,15 @@ function App() {
 
         <main className={classes.content}>
           <Toolbar />
-          <Route exact path="/" component={EmployeeList} />
-          <Route exact path="/employees" component={EmployeeList} />
-          <Route exact path="/add-employee" component={AddEmployee} />
-          <Route exact path="/employees/:id" component={EmployeeDetail} />
-          <Route exact path="/departments" component={DepartmentList} />
+          <PrivateRoute exact path="/" component={EmployeeList} />
+          <PrivateRoute exact path="/employees" component={EmployeeList} />
+          <PrivateRoute exact path="/add-employee" component={AddEmployee} />
+          <PrivateRoute
+            exact
+            path="/employees/:id"
+            component={EmployeeDetail}
+          />
+          <PrivateRoute exact path="/departments" component={DepartmentList} />
           <Route exact path="/sign-in" component={Login} />
         </main>
       </div>
