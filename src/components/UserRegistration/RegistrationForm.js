@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+
+const USER_REST_API_URL = "http://localhost:8080/sign-up";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
+  message: {
+    color: "red",
+  },
 }));
 
 const RegistrationForm = ({ handleClose }) => {
@@ -26,10 +32,24 @@ const RegistrationForm = ({ handleClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleClose();
+    sendUserData();
+  };
+
+  const sendUserData = async () => {
+    try {
+      const data = {
+        email: email,
+        password: password,
+      };
+      await axios.post(USER_REST_API_URL, data);
+      setMessage("Successful registration, you can sign in now!");
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
   };
 
   return (
@@ -58,6 +78,7 @@ const RegistrationForm = ({ handleClose }) => {
         value={confirmedPassword}
         onChange={(e) => setConfirmedPassword(e.target.value)}
       />
+      <div className={classes.message}>{message}</div>
       <div>
         <Button variant="outlined" onClick={handleClose}>
           Cancel
