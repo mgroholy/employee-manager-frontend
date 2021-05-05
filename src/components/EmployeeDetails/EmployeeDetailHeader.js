@@ -66,16 +66,20 @@ const EmployeeDetailHeader = (props) => {
           {props.employeeName}
         </h1>
       )}
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        className={classes.button}
-        startIcon={hasUpdate ? <ArrowBackIos /> : <Update />}
-        onClick={() => setHasUpdate(!hasUpdate)}
-      >
-        Update name
-      </Button>
+
+      {roles.includes("ROLE_SUPERVISOR") && (
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          className={classes.button}
+          startIcon={hasUpdate ? <ArrowBackIos /> : <Update />}
+          onClick={() => setHasUpdate(!hasUpdate)}
+        >
+          Update name
+        </Button>
+      )}
+
       {roles.includes("ROLE_ADMIN") && (
         <Button
           variant="contained"
@@ -88,6 +92,7 @@ const EmployeeDetailHeader = (props) => {
           Delete
         </Button>
       )}
+
       {props.status === "INACTIVE" && (
         <Button
           variant="contained"
