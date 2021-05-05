@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -8,6 +8,7 @@ import ArrowBackIos from "@material-ui/icons/ArrowBackIos";
 import axios from "axios";
 import { TextField } from "@material-ui/core";
 import { Archive } from "@material-ui/icons";
+import { UserContext } from "../Security/UserContext";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 const EmployeeDetailHeader = (props) => {
   const classes = useStyles();
   const history = useHistory();
+  const { roles } = useContext(UserContext);
   const [hasUpdate, setHasUpdate] = useState(false);
 
   const deleteEmployee = async () => {
@@ -74,17 +76,19 @@ const EmployeeDetailHeader = (props) => {
       >
         Update name
       </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        size="small"
-        className={classes.button}
-        startIcon={<Delete />}
-        onClick={deleteEmployee}
-      >
-        Delete
-      </Button>
-      {props.status === "INACTIVE" ? (
+      {roles.includes("ROLE_ADMIN") && (
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
+          className={classes.button}
+          startIcon={<Delete />}
+          onClick={deleteEmployee}
+        >
+          Delete
+        </Button>
+      )}
+      {props.status === "INACTIVE" && (
         <Button
           variant="contained"
           size="small"
@@ -94,8 +98,6 @@ const EmployeeDetailHeader = (props) => {
         >
           Deactivated
         </Button>
-      ) : (
-        <></>
       )}
     </div>
   );
