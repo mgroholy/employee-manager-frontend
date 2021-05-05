@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
 import { Archive, Update } from "@material-ui/icons";
 import {
   Accordion,
@@ -14,6 +13,7 @@ import {
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
 import Dropdown from "./Dropdown";
+import ConfirmModal from "../FeedbackModal/ConfirmModal";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmployeeDetail = () => {
+  const history = useHistory();
   const classes = useStyles();
   const { id } = useParams();
   const [employee, setEmployee] = useState({});
@@ -52,6 +53,12 @@ const EmployeeDetail = () => {
   const [terminationDate, setTerminationDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
+
+  const [dialogContent, setDialogContent] = useState("");
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen);
 
   let employeeAttributes = Object.keys(employee);
   const index = employeeAttributes.indexOf("Name");
@@ -69,6 +76,8 @@ const EmployeeDetail = () => {
         setEmployee(response.data);
       } catch (error) {
         setIsError(true);
+        setDialogContent(`Employee could not be found by ID ${id}.`);
+        toggleDialog();
       }
     };
 
@@ -206,11 +215,7 @@ const EmployeeDetail = () => {
 
   return (
     <div className={classes.root}>
-      {isError ? (
-        <Alert severity="error">
-          Employee could not be found by ID '{id}'.
-        </Alert>
-      ) : (
+      {!isError && (
         <EmployeeDetailHeader
           employeeName={employee.Name}
           employeeId={employee.ID}
@@ -260,6 +265,14 @@ const EmployeeDetail = () => {
           </Accordion>
         ))}
       </div>
+      <ConfirmModal
+        open={dialogOpen}
+        toggleOpen={toggleDialog}
+        dialogContent={dialogContent}
+        setDialogContent={setDialogContent}
+        dialogButtonOneText="OK"
+        onClickAction={() => history.push("/employees")}
+      />
     </div>
   );
 };
