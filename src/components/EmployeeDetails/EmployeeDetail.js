@@ -146,6 +146,7 @@ const EmployeeDetail = () => {
       "Clearance level",
       "Date of termination",
       "Date of hire",
+      "Position",
     ];
     return specialFields.includes(attribute);
   };
@@ -158,6 +159,7 @@ const EmployeeDetail = () => {
     switch (attribute) {
       case "Department":
       case "Clearance level":
+      case "Position":
         return (
           <Dropdown
             type={attribute}
