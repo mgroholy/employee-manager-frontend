@@ -29,7 +29,7 @@ const Login = () => {
   const SIGN_IN_REST_API_URL = "http://localhost:8080/sign-in";
 
   const history = useHistory();
-  const { setUser } = useContext(UserContext);
+  const { setUser, setRoles } = useContext(UserContext);
 
   const [open, setOpen] = useState(false);
   const [inputData, setInputData] = useState({ email: "", password: "" });
@@ -49,6 +49,7 @@ const Login = () => {
         );
         if (response.status === 200) {
           setUser(response.data.username);
+          setRoles(response.data.authorities);
           history.push("/");
         }
       } catch (apiError) {
