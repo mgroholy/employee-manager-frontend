@@ -28,10 +28,10 @@ function App() {
   const classes = useStyles();
   const location = useLocation();
 
-  const { user, setUser, isLoading } = CurrentUser();
+  const { user, setUser, roles, isLoading } = CurrentUser();
 
   return (
-    <UserContext.Provider value={{ user, setUser, isLoading }}>
+    <UserContext.Provider value={{ user, setUser, roles, isLoading }}>
       <div className={classes.root}>
         <CssBaseline />
         <TopBar />
