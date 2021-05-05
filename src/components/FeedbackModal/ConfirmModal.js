@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogContentText,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
 
 const ConfirmModal = ({
   open,
