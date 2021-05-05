@@ -12,7 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import FeedbackModal from "../FeedbackModal/FeedbackModal";
+import ConfirmModal from "../FeedbackModal/ConfirmModal";
 import AddDepartment from "./AddDepartment";
 
 const useStyles = makeStyles(() => ({
@@ -42,6 +42,10 @@ const DepartmentList = () => {
 
   const [dialogContent, setDialogContent] = useState("");
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen);
+
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL, {
       withCredentials: true,
@@ -56,8 +60,10 @@ const DepartmentList = () => {
       await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`, {
         withCredentials: true,
       });
+      toggleDialog();
       setDialogContent("Department has been deleted.");
     } catch {
+      toggleDialog();
       setDialogContent("An unexpected error occured.");
     } finally {
       fetchDepartments();
@@ -99,6 +105,7 @@ const DepartmentList = () => {
                       department.employeeCount === 0
                         ? () => deleteDepartment(department.id)
                         : () => {
+                            toggleDialog();
                             setDialogContent(
                               "Department with employees cannot be deleted."
                             );
@@ -116,7 +123,9 @@ const DepartmentList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <FeedbackModal
+      <ConfirmModal
+        open={dialogOpen}
+        toggleOpen={toggleDialog}
         dialogContent={dialogContent}
         setDialogContent={setDialogContent}
         dialogButtonOneText="OK"
