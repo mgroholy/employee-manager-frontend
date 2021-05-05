@@ -11,7 +11,8 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../Security/UserContext";
 import AddDepartment from "./AddDepartment";
 
 const useStyles = makeStyles(() => ({
@@ -37,6 +38,7 @@ const useStyles = makeStyles(() => ({
 const DepartmentList = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 
+  const { roles } = useContext(UserContext);
   const [departments, setDepartments] = useState([]);
 
   const fetchDepartments = async () => {
@@ -79,9 +81,12 @@ const DepartmentList = () => {
               <TableCell className={classes.headerCell}>
                 Number of Employees
               </TableCell>
-              <TableCell className={classes.headerCell}>Delete</TableCell>
+              {roles.includes("ROLE_ADMIN") && (
+                <TableCell className={classes.headerCell}>Delete</TableCell>
+              )}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {departments.map((department) => (
               <TableRow key={department.id} className={classes.tableRow}>
@@ -89,26 +94,32 @@ const DepartmentList = () => {
                 <TableCell className={classes.tableCell}>
                   {department.employeeCount}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
-                  <DeleteIcon
-                    className={classes.trashIcon}
-                    onClick={
-                      department.employeeCount === 0
-                        ? () => deleteDepartment(department.id)
-                        : () =>
-                            alert(
-                              "Department with employees cannot be deleted."
-                            )
-                    }
-                  />
-                </TableCell>
+
+                {roles.includes("ROLE_ADMIN") && (
+                  <TableCell className={classes.tableCell}>
+                    <DeleteIcon
+                      className={classes.trashIcon}
+                      onClick={
+                        department.employeeCount === 0
+                          ? () => deleteDepartment(department.id)
+                          : () =>
+                              alert(
+                                "Department with employees cannot be deleted."
+                              )
+                      }
+                    />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell>
-                <AddDepartment fetchDepartments={fetchDepartments} />
-              </TableCell>
-            </TableRow>
+
+            {roles.includes("ROLE_ADMIN") && (
+              <TableRow>
+                <TableCell>
+                  <AddDepartment fetchDepartments={fetchDepartments} />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
