@@ -27,6 +27,7 @@ export default function CurrentUser() {
     user,
     setUser,
     roles,
+    setRoles,
     isLoading,
   };
 }
