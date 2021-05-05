@@ -71,7 +71,7 @@ const SideBar = () => {
               <ListItemText primary={"Employees"} />
             </ListItem>
 
-            {roles.includes("ROLE_ADMIN") && (
+            {roles.includes("ADMIN") && (
               <ListItem
                 button
                 component={NavLink}

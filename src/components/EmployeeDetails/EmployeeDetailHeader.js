@@ -67,7 +67,7 @@ const EmployeeDetailHeader = (props) => {
         </h1>
       )}
 
-      {roles.includes("ROLE_SUPERVISOR") && (
+      {roles.includes("SUPERVISOR") && (
         <Button
           variant="contained"
           color="primary"
@@ -80,7 +80,7 @@ const EmployeeDetailHeader = (props) => {
         </Button>
       )}
 
-      {roles.includes("ROLE_ADMIN") && (
+      {roles.includes("ADMIN") && (
         <Button
           variant="contained"
           color="secondary"

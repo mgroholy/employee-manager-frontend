@@ -81,7 +81,7 @@ const DepartmentList = () => {
               <TableCell className={classes.headerCell}>
                 Number of Employees
               </TableCell>
-              {roles.includes("ROLE_ADMIN") && (
+              {roles.includes("ADMIN") && (
                 <TableCell className={classes.headerCell}>Delete</TableCell>
               )}
             </TableRow>
@@ -95,7 +95,7 @@ const DepartmentList = () => {
                   {department.employeeCount}
                 </TableCell>
 
-                {roles.includes("ROLE_ADMIN") && (
+                {roles.includes("ADMIN") && (
                   <TableCell className={classes.tableCell}>
                     <DeleteIcon
                       className={classes.trashIcon}
@@ -113,7 +113,7 @@ const DepartmentList = () => {
               </TableRow>
             ))}
 
-            {roles.includes("ROLE_ADMIN") && (
+            {roles.includes("ADMIN") && (
               <TableRow>
                 <TableCell>
                   <AddDepartment fetchDepartments={fetchDepartments} />
