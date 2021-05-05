@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -65,6 +65,7 @@ const EmployeeDetailHeader = (props) => {
       setDialogContent(
         "Employee with ID " + props.employeeId + " could not be found!"
       );
+      setDialogButtonOneText("OK");
       setOnClickHandler(() => () => redirectToEmployees());
       toggleDialog();
     }
