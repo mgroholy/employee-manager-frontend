@@ -5,11 +5,14 @@ import TopBar from "./components/bars/TopBar";
 import SideBar from "./components/bars/SideBar";
 import EmployeeList from "./components/EmployeeList/EmployeeList";
 import Toolbar from "@material-ui/core/Toolbar";
-import { Route, useLocation } from "react-router-dom";
+import { Route, useLocation, Switch } from "react-router-dom";
 import AddEmployee from "./components/AddEmployee/AddEmployee";
 import EmployeeDetail from "./components/EmployeeDetails/EmployeeDetail";
 import DepartmentList from "./components/DepartmentList/DepartmentList";
 import Login from "./components/Login/Login";
+import { UserContext } from "./components/Security/UserContext";
+import PrivateRoute from "./components/Security/PrivateRoute";
+import CurrentUser from "./components/Security/CurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,22 +28,36 @@ function App() {
   const classes = useStyles();
   const location = useLocation();
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <TopBar />
-      {location.pathname !== "/sign-in" && <SideBar />}
+  const { user, setUser, isLoading } = CurrentUser();
 
-      <main className={classes.content}>
-        <Toolbar />
-        <Route exact path="/" component={EmployeeList} />
-        <Route exact path="/employees" component={EmployeeList} />
-        <Route exact path="/add-employee" component={AddEmployee} />
-        <Route exact path="/employees/:id" component={EmployeeDetail} />
-        <Route exact path="/departments" component={DepartmentList} />
-        <Route exact path="/sign-in" component={Login} />
-      </main>
-    </div>
+  return (
+    <UserContext.Provider value={{ user, setUser, isLoading }}>
+      <div className={classes.root}>
+        <CssBaseline />
+        <TopBar />
+        {location.pathname !== "/sign-in" && user !== null && <SideBar />}
+
+        <main className={classes.content}>
+          <Toolbar />
+          <Switch>
+            <PrivateRoute exact path="/" component={EmployeeList} />
+            <PrivateRoute exact path="/employees" component={EmployeeList} />
+            <PrivateRoute exact path="/add-employee" component={AddEmployee} />
+            <PrivateRoute
+              exact
+              path="/employees/:id"
+              component={EmployeeDetail}
+            />
+            <PrivateRoute
+              exact
+              path="/departments"
+              component={DepartmentList}
+            />
+            <Route exact path="/sign-in" component={Login} />
+          </Switch>
+        </main>
+      </div>
+    </UserContext.Provider>
   );
 }
 
