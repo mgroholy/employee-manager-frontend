@@ -233,7 +233,7 @@ const EmployeeDetail = () => {
                 {attribute}
               </Typography>
               <Typography className={classes.attributeValue}>
-                {attribute === "Department"
+                {attribute === "Department" || attribute === "Position"
                   ? employee[attribute].name
                   : employee[attribute]}
               </Typography>
