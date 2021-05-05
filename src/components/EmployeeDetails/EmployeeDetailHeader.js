@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -8,6 +8,7 @@ import ArrowBackIos from "@material-ui/icons/ArrowBackIos";
 import axios from "axios";
 import { TextField } from "@material-ui/core";
 import { Archive } from "@material-ui/icons";
+import ConfirmModal from "../FeedbackModal/ConfirmModal";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
 
@@ -22,23 +23,50 @@ const EmployeeDetailHeader = (props) => {
   const history = useHistory();
   const [hasUpdate, setHasUpdate] = useState(false);
 
+  const [dialogContent, setDialogContent] = useState("");
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [dialogButtonOneText, setDialogButtonOneText] = useState("");
+
+  const [dialogButtonTwoText, setDialogButtonTwoText] = useState("");
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen);
+
+  const redirectToEmployees = () => {
+    history.push("/employees");
+  };
+
+  const [onClickHandler, setOnClickHandler] = useState(() => () =>
+    redirectToEmployees()
+  );
+
   const deleteEmployee = async () => {
+    setDialogContent("Delete employee with ID " + props.employeeId + "?");
+    setDialogButtonOneText("Confirm");
+    setDialogButtonTwoText("Decline");
+    setOnClickHandler(() => () => sendDelete());
+    toggleDialog();
+  };
+
+  const sendDelete = async () => {
     const url = EMPLOYEE_REST_API_URL + props.employeeId + "/delete";
     try {
-      const answer = window.confirm(
-        "Delete employee with ID " + props.employeeId + "?"
+      await axios.delete(url, { withCredentials: true });
+      setDialogContent(
+        "Employee with ID " +
+          props.employeeId +
+          " has been successfully deleted!"
       );
-      if (answer) {
-        await axios.delete(url, { withCredentials: true });
-        alert(
-          "Employee with ID " +
-            props.employeeId +
-            " has been successfully deleted!"
-        );
-        history.push("/employees");
-      }
+      setDialogButtonOneText("OK");
+      setOnClickHandler(() => () => redirectToEmployees());
+      toggleDialog();
     } catch (error) {
-      alert("Employee with ID " + props.employeeId + " could not be found!");
+      setDialogContent(
+        "Employee with ID " + props.employeeId + " could not be found!"
+      );
+      setOnClickHandler(() => () => redirectToEmployees());
+      toggleDialog();
     }
   };
 
@@ -49,6 +77,17 @@ const EmployeeDetailHeader = (props) => {
         alignItems: "center",
       }}
     >
+      <ConfirmModal
+        open={dialogOpen}
+        toggleOpen={toggleDialog}
+        dialogContent={dialogContent}
+        setDialogContent={setDialogContent}
+        dialogButtonOneText={dialogButtonOneText}
+        setDialogButtonOneText={setDialogButtonOneText}
+        dialogButtonTwoText={dialogButtonTwoText}
+        setDialogButtonTwoText={setDialogButtonTwoText}
+        onClickAction={onClickHandler}
+      />
       {hasUpdate ? (
         <TextField
           label="Name"
