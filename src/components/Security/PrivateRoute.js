@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
+import LoaderSpinner from "../LoaderSpinner";
 import { UserContext } from "./UserContext";
 
 export default function PrivateRoute(props) {
@@ -7,8 +8,7 @@ export default function PrivateRoute(props) {
   const { component: Component, ...rest } = props;
 
   if (isLoading) {
-    // TODO: create loader spinner
-    return <div></div>;
+    return <LoaderSpinner />;
   }
 
   if (user === "anonymousUser") {
