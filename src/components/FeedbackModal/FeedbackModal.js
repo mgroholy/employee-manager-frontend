@@ -6,19 +6,21 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 
 const FeedbackModal = ({
   dialogContent,
-  dialogButtonText,
+  setDialogContent,
+  dialogButtonOneText,
+  dialogButtonTwoText,
   dialogTitle,
-  open,
-  toggleModal,
+  sendChoice,
 }) => {
+  const [choice, setChoice] = useState(false);
+
   return (
     <Dialog
-      open={open}
-      onClose={toggleModal}
+      open={dialogContent !== ""}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -29,9 +31,28 @@ const FeedbackModal = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={toggleModal} color="primary">
-          {dialogButtonText}
+        <Button
+          onClick={() => {
+            setDialogContent("");
+            setChoice(true);
+            sendChoice && sendChoice(choice);
+          }}
+          color="primary"
+        >
+          {dialogButtonOneText}
         </Button>
+        {dialogButtonTwoText && (
+          <Button
+            onClick={() => {
+              setDialogContent("");
+              setChoice(false);
+              sendChoice && sendChoice(choice);
+            }}
+            color="primary"
+          >
+            {dialogButtonTwoText}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
