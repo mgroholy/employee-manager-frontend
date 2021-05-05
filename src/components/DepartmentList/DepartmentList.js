@@ -41,9 +41,6 @@ const DepartmentList = () => {
   const [departments, setDepartments] = useState([]);
 
   const [dialogContent, setDialogContent] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const toggleDialog = () => setOpenDialog(!openDialog);
 
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL, {
@@ -59,10 +56,8 @@ const DepartmentList = () => {
       await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`, {
         withCredentials: true,
       });
-      toggleDialog();
       setDialogContent("Department has been deleted.");
     } catch {
-      toggleDialog();
       setDialogContent("An unexpected error occured.");
     } finally {
       fetchDepartments();
@@ -104,7 +99,6 @@ const DepartmentList = () => {
                       department.employeeCount === 0
                         ? () => deleteDepartment(department.id)
                         : () => {
-                            toggleDialog();
                             setDialogContent(
                               "Department with employees cannot be deleted."
                             );
@@ -123,10 +117,9 @@ const DepartmentList = () => {
         </Table>
       </TableContainer>
       <FeedbackModal
-        open={openDialog}
         dialogContent={dialogContent}
-        toggleModal={toggleDialog}
-        dialogButtonText="OK"
+        setDialogContent={setDialogContent}
+        dialogButtonOneText="OK"
       />
     </Container>
   );
