@@ -5,6 +5,7 @@ import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
 const LEVELS_REST_API_URL = "http://localhost:8080/levels";
 const STATUSES_REST_API_URL = "http://localhost:8080/statuses";
+const POSITIONS_REST_API_URL = "http://localhost:8080/positions";
 
 const Dropdown = (props) => {
   const [data, setData] = useState([]);
@@ -19,6 +20,8 @@ const Dropdown = (props) => {
         return LEVELS_REST_API_URL;
       case "Status":
         return STATUSES_REST_API_URL;
+      case "Position":
+        return POSITIONS_REST_API_URL;
       default:
         throw new Error("Case " + props.type + " not found.");
     }
@@ -32,6 +35,8 @@ const Dropdown = (props) => {
         return "New Level";
       case "Status":
         return "New Status";
+      case "Position":
+        return "New Position";
       default:
         throw new Error("Case " + props.type + " not found.");
     }
@@ -58,9 +63,15 @@ const Dropdown = (props) => {
           <MenuItem
             onClick={props.onDropdownClick}
             key={index}
-            value={props.type === "Department" ? item.name : item}
+            value={
+              props.type === "Department" || props.type === "Position"
+                ? item.name
+                : item
+            }
           >
-            {props.type === "Department" ? item.name : item}
+            {props.type === "Department" || props.type === "Position"
+              ? item.name
+              : item}
           </MenuItem>
         ))}
       </Select>

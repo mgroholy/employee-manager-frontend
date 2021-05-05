@@ -140,7 +140,7 @@ const EmployeeList = () => {
 
                     <TableCell>{employee.Email}</TableCell>
                     <TableCell>{employee.Department.name}</TableCell>
-                    <TableCell>{employee.Position}</TableCell>
+                    <TableCell>{employee.Position.name}</TableCell>
                     <TableCell>{employee.Status}</TableCell>
                   </TableRow>
                 ))}

@@ -13,6 +13,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../Security/UserContext";
+import ConfirmModal from "../FeedbackModal/ConfirmModal";
 import AddDepartment from "./AddDepartment";
 
 const useStyles = makeStyles(() => ({
@@ -41,6 +42,12 @@ const DepartmentList = () => {
   const { roles } = useContext(UserContext);
   const [departments, setDepartments] = useState([]);
 
+  const [dialogContent, setDialogContent] = useState("");
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const toggleDialog = () => setDialogOpen(!dialogOpen);
+
   const fetchDepartments = async () => {
     const response = await axios.get(DEPARTMENTS_REST_API_URL, {
       withCredentials: true,
@@ -55,9 +62,11 @@ const DepartmentList = () => {
       await axios.delete(`${DEPARTMENTS_REST_API_URL}/${departmentId}/delete`, {
         withCredentials: true,
       });
-      alert("Department has been deleted.");
+      toggleDialog();
+      setDialogContent("Department has been deleted.");
     } catch {
-      alert("An unexpected error occured.");
+      toggleDialog();
+      setDialogContent("An unexpected error occured.");
     } finally {
       fetchDepartments();
     }
@@ -102,10 +111,12 @@ const DepartmentList = () => {
                       onClick={
                         department.employeeCount === 0
                           ? () => deleteDepartment(department.id)
-                          : () =>
-                              alert(
+                          : () => {
+                              toggleDialog();
+                              setDialogContent(
                                 "Department with employees cannot be deleted."
-                              )
+                              );
+                            }
                       }
                     />
                   </TableCell>
@@ -123,6 +134,13 @@ const DepartmentList = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <ConfirmModal
+        open={dialogOpen}
+        toggleOpen={toggleDialog}
+        dialogContent={dialogContent}
+        setDialogContent={setDialogContent}
+        dialogButtonOneText="OK"
+      />
     </Container>
   );
 };
