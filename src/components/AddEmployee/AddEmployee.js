@@ -15,6 +15,7 @@ import CustomTextField from "./CustomTextField";
 const AddEmployee = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
   const LEVELS_REST_API_URL = "http://localhost:8080/levels";
+  const POSITIONS_REST_API_URL = "http://localhost:8080/positions";
 
   const [employee, setEmployee] = useState({
     name: "",
@@ -40,6 +41,8 @@ const AddEmployee = () => {
 
   const [departments, setDepartments] = useState([]);
   const [levels, setLevels] = useState([]);
+
+  const [positions, setPositions] = useState([]);
 
   const sendEmployee = () => {
     const employeeData = {
@@ -152,9 +155,17 @@ const AddEmployee = () => {
     setLevels(levelObjects);
   };
 
+  const fetchPositions = async () => {
+    const response = await axios.get(POSITIONS_REST_API_URL, {
+      withCredentials: true,
+    });
+    setPositions(response.data);
+  };
+
   useEffect(() => {
     fetchDepartments();
     fetchLevels();
+    fetchPositions();
   }, []);
 
   return (
@@ -220,13 +231,14 @@ const AddEmployee = () => {
                   setEmployee={setEmployee}
                   selectOptions={levels}
                 />
-                <CustomTextField
+                <AddEmployeeDropDown
                   label="Position:"
                   setError={setError}
                   error={error}
                   employee={employee}
                   fieldName={"position"}
                   setEmployee={setEmployee}
+                  selectOptions={positions}
                 />
                 <CustomTextField
                   label="Date of hire:"
