@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
 import { Archive, Update } from "@material-ui/icons";
 import {
   Accordion,
@@ -43,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmployeeDetail = () => {
+  const history = useHistory();
   const classes = useStyles();
   const { id } = useParams();
   const [employee, setEmployee] = useState({});
@@ -271,6 +271,7 @@ const EmployeeDetail = () => {
         dialogContent={dialogContent}
         setDialogContent={setDialogContent}
         dialogButtonOneText="OK"
+        onClickAction={() => history.push("/employees")}
       />
     </div>
   );
