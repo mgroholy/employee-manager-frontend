@@ -22,6 +22,9 @@ const useStyles = makeStyles(() => ({
   button: {
     margin: "10px",
   },
+  form: {
+    width: "500px",
+  },
 }));
 
 const Login = () => {
@@ -95,7 +98,7 @@ const Login = () => {
   };
 
   return (
-    <Container>
+    <Container className={classes.form}>
       <Paper elevation={2}>
         <Box p={5}>
           <Typography variant="h3">Login</Typography>
