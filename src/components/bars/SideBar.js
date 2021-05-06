@@ -1,20 +1,24 @@
 import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Add from "@material-ui/icons/Add";
-import AccountTree from "@material-ui/icons/AccountTree";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Divider from "@material-ui/core/Divider";
 import { NavLink } from "react-router-dom";
-import { UserContext } from "../Security/UserContext";
 import axios from "axios";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+import {
+  Drawer,
+  Toolbar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@material-ui/core";
+import {
+  Add,
+  AccountTree,
+  AccountCircle,
+  ExitToApp,
+  VerifiedUser,
+} from "@material-ui/icons/";
+import { makeStyles } from "@material-ui/core/styles";
+import { UserContext } from "../Security/UserContext";
 
 const drawerWidth = 250;
 
@@ -66,14 +70,14 @@ const SideBar = () => {
           <List>
             <ListItem>
               <ListItemIcon style={{ color: "white" }}>
-                <VerifiedUserIcon />
+                <VerifiedUser />
               </ListItemIcon>
               <ListItemText primary={user} />
             </ListItem>
 
             <ListItem button onClick={handleLogout}>
               <ListItemIcon style={{ color: "white" }}>
-                <ExitToAppIcon />
+                <ExitToApp />
               </ListItemIcon>
               <ListItemText primary={"Logout"} />
             </ListItem>
