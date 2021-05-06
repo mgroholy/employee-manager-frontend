@@ -13,6 +13,8 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Divider from "@material-ui/core/Divider";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../Security/UserContext";
+import axios from "axios";
+import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 
 const drawerWidth = 250;
 
@@ -36,7 +38,19 @@ const useStyles = makeStyles(() => ({
 
 const SideBar = () => {
   const classes = useStyles();
-  const { user, roles } = useContext(UserContext);
+  const { user, setUser, roles, setRoles } = useContext(UserContext);
+
+  const handleLogout = async () => {
+    try {
+      await axios.get("http://localhost:8080/sign-out", {
+        withCredentials: true,
+      });
+      setUser("anonymousUser");
+      setRoles([]);
+    } catch (error) {
+      // TODO: display error message
+    }
+  };
 
   return (
     <div>
@@ -52,9 +66,16 @@ const SideBar = () => {
           <List>
             <ListItem>
               <ListItemIcon style={{ color: "white" }}>
-                <ExitToAppIcon />
+                <VerifiedUserIcon />
               </ListItemIcon>
               <ListItemText primary={user} />
+            </ListItem>
+
+            <ListItem button onClick={handleLogout}>
+              <ListItemIcon style={{ color: "white" }}>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
             </ListItem>
 
             <Divider style={{ backgroundColor: "white" }} />
