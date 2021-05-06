@@ -7,15 +7,19 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../Security/UserContext";
 import AddEmployeeDropDown from "./AddEmployeeDropDown";
 import CustomTextField from "./CustomTextField";
+import Alert from "@material-ui/lab/Alert";
 
 const AddEmployee = () => {
   const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
   const LEVELS_REST_API_URL = "http://localhost:8080/levels";
   const POSITIONS_REST_API_URL = "http://localhost:8080/positions";
+
+  const { roles } = useContext(UserContext);
 
   const [employee, setEmployee] = useState({
     name: "",
@@ -170,103 +174,109 @@ const AddEmployee = () => {
 
   return (
     <Container>
-      <Paper elevation={2}>
-        <Box p={5}>
-          <Typography variant="h3">Add employee</Typography>
+      {roles.includes("ADMIN") ? (
+        <Paper elevation={2}>
+          <Box p={5}>
+            <Typography variant="h3">Add employee</Typography>
 
-          <FormControl fullWidth={true}>
-            <form>
-              <Box paddingTop={3}>
-                <CustomTextField
-                  label="Employee name:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"name"}
-                  setEmployee={setEmployee}
-                />
-                <CustomTextField
-                  label="Email:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"email"}
-                  setEmployee={setEmployee}
-                />
-                <CustomTextField
-                  label="Date of birth:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"dateOfBirth"}
-                  setEmployee={setEmployee}
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                />
-                <AddEmployeeDropDown
-                  label="Department:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"department"}
-                  setEmployee={setEmployee}
-                  selectOptions={departments}
-                />
+            <FormControl fullWidth={true}>
+              <form>
+                <Box paddingTop={3}>
+                  <CustomTextField
+                    label="Employee name:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"name"}
+                    setEmployee={setEmployee}
+                  />
+                  <CustomTextField
+                    label="Email:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"email"}
+                    setEmployee={setEmployee}
+                  />
+                  <CustomTextField
+                    label="Date of birth:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"dateOfBirth"}
+                    setEmployee={setEmployee}
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <AddEmployeeDropDown
+                    label="Department:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"department"}
+                    setEmployee={setEmployee}
+                    selectOptions={departments}
+                  />
 
-                <CustomTextField
-                  label="Phone number:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"phoneNumber"}
-                  setEmployee={setEmployee}
-                />
+                  <CustomTextField
+                    label="Phone number:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"phoneNumber"}
+                    setEmployee={setEmployee}
+                  />
 
-                <AddEmployeeDropDown
-                  label="Clearance level:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"clearanceLevel"}
-                  setEmployee={setEmployee}
-                  selectOptions={levels}
-                />
-                <AddEmployeeDropDown
-                  label="Position:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"position"}
-                  setEmployee={setEmployee}
-                  selectOptions={positions}
-                />
-                <CustomTextField
-                  label="Date of hire:"
-                  setError={setError}
-                  error={error}
-                  employee={employee}
-                  fieldName={"dateOfHire"}
-                  setEmployee={setEmployee}
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                />
-                <Button
-                  variant="outlined"
-                  margin={"normal"}
-                  color="secondary"
-                  type="submit"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    sendEmployee();
-                  }}
-                >
-                  Submit
-                </Button>
-              </Box>
-            </form>
-          </FormControl>
-        </Box>
-      </Paper>
+                  <AddEmployeeDropDown
+                    label="Clearance level:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"clearanceLevel"}
+                    setEmployee={setEmployee}
+                    selectOptions={levels}
+                  />
+                  <AddEmployeeDropDown
+                    label="Position:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"position"}
+                    setEmployee={setEmployee}
+                    selectOptions={positions}
+                  />
+                  <CustomTextField
+                    label="Date of hire:"
+                    setError={setError}
+                    error={error}
+                    employee={employee}
+                    fieldName={"dateOfHire"}
+                    setEmployee={setEmployee}
+                    type="date"
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  <Button
+                    variant="outlined"
+                    margin={"normal"}
+                    color="secondary"
+                    type="submit"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      sendEmployee();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </form>
+            </FormControl>
+          </Box>
+        </Paper>
+      ) : (
+        <Alert severity="warning">
+          You are not allowed to access this page!
+        </Alert>
+      )}
     </Container>
   );
 };
