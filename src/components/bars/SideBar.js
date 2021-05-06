@@ -10,6 +10,7 @@ import Add from "@material-ui/icons/Add";
 import AccountTree from "@material-ui/icons/AccountTree";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import WorkIcon from "@material-ui/icons/Work";
 import Divider from "@material-ui/core/Divider";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../Security/UserContext";
@@ -95,6 +96,17 @@ const SideBar = () => {
                 <AccountTree />
               </ListItemIcon>
               <ListItemText primary={"Departments"} />
+            </ListItem>
+            <ListItem
+              button
+              component={NavLink}
+              to="/positions"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <WorkIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Positions"} />
             </ListItem>
           </List>
         </div>
