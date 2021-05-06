@@ -75,21 +75,25 @@ const SideBar = () => {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem>
-              <ListItemIcon style={{ color: "white" }}>
-                <VerifiedUser />
-              </ListItemIcon>
-              <ListItemText primary={user} />
-            </ListItem>
+            {user !== null && user !== "anonymousUser" && (
+              <>
+                <ListItem>
+                  <ListItemIcon style={{ color: "white" }}>
+                    <VerifiedUser />
+                  </ListItemIcon>
+                  <ListItemText primary={user} />
+                </ListItem>
 
-            <ListItem button onClick={handleLogout}>
-              <ListItemIcon style={{ color: "white" }}>
-                <ExitToApp />
-              </ListItemIcon>
-              <ListItemText primary={"Logout"} />
-            </ListItem>
+                <ListItem button onClick={handleLogout}>
+                  <ListItemIcon style={{ color: "white" }}>
+                    <ExitToApp />
+                  </ListItemIcon>
+                  <ListItemText primary={"Logout"} />
+                </ListItem>
 
-            <Divider style={{ backgroundColor: "white" }} />
+                <Divider style={{ backgroundColor: "white" }} />
+              </>
+            )}
 
             <ListItem
               button

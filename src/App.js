@@ -13,6 +13,7 @@ import Login from "./components/Login/Login";
 import { UserContext } from "./components/Security/UserContext";
 import PrivateRoute from "./components/Security/PrivateRoute";
 import CurrentUser from "./components/Security/CurrentUser";
+import NotFound from "./components/NotFound";
 import PositionList from "./components/PositionList/PositionList";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ function App() {
             />
             <PrivateRoute exact path="/positions" component={PositionList} />
             <Route exact path="/sign-in" component={Login} />
+            <Route path="*" component={NotFound} />
           </Switch>
         </main>
       </div>
