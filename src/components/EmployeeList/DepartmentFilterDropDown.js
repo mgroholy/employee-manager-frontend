@@ -5,7 +5,7 @@ import {
   InputLabel,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
+import React, { useRef } from "react";
 
 const useStyles = makeStyles(() => ({
   formControl: {
@@ -22,11 +22,17 @@ const DepartmentFilterDropDown = ({
 }) => {
   const classes = useStyles();
 
+  const labelRef = useRef();
+  const labelWidth = labelRef.current ? labelRef.current.clientWidth : 0;
+
   return (
     <FormControl className={classes.formControl} variant={"outlined"}>
-      <InputLabel id="department-select-label">Department</InputLabel>
+      <InputLabel id="department-select-label" ref={labelRef}>
+        Department
+      </InputLabel>
       <Select
         labelId="department-select-label"
+        labelWidth={labelWidth}
         id="department-select"
         defaultValue={"all"}
         value={departmentOption}

@@ -6,7 +6,7 @@ import {
   FormHelperText,
   makeStyles,
 } from "@material-ui/core";
-import React from "react";
+import React, { useRef } from "react";
 
 const useStyles = makeStyles(() => ({
   formErrorText: {
@@ -25,11 +25,17 @@ const AddEmployeeDropDown = ({
 }) => {
   const classes = useStyles();
 
+  const labelRef = useRef();
+  const labelWidth = labelRef.current ? labelRef.current.clientWidth : 0;
+
   return (
     <FormControl variant="outlined" fullWidth={true} margin={"normal"}>
-      <InputLabel id="select-label">{label}</InputLabel>
+      <InputLabel id="select-label" ref={labelRef}>
+        {label}
+      </InputLabel>
       <Select
         labelId="select-label"
+        labelWidth={labelWidth}
         id="select"
         defaultValue={""}
         error={error[fieldName] !== ""}
