@@ -91,7 +91,9 @@ const ItemList = ({ apiUrl, name }) => {
               <TableCell className={classes.headerCell}>
                 Number of Employees
               </TableCell>
-              <TableCell className={classes.headerCell}>Delete</TableCell>
+              {roles.includes(requiredLevel) && (
+                <TableCell className={classes.headerCell}>Delete</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -101,21 +103,23 @@ const ItemList = ({ apiUrl, name }) => {
                 <TableCell className={classes.tableCell}>
                   {item.employeeCount}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
-                  <DeleteIcon
-                    className={classes.trashIcon}
-                    onClick={
-                      item.employeeCount === 0
-                        ? () => deleteItem(item.id)
-                        : () => {
-                            toggleDialog();
-                            setDialogContent(
-                              `${name} with employees cannot be deleted.`
-                            );
-                          }
-                    }
-                  />
-                </TableCell>
+                {roles.includes(requiredLevel) && (
+                  <TableCell className={classes.tableCell}>
+                    <DeleteIcon
+                      className={classes.trashIcon}
+                      onClick={
+                        item.employeeCount === 0
+                          ? () => deleteItem(item.id)
+                          : () => {
+                              toggleDialog();
+                              setDialogContent(
+                                `${name} with employees cannot be deleted.`
+                              );
+                            }
+                      }
+                    />
+                  </TableCell>
+                )}
               </TableRow>
             ))}
             {roles.includes(requiredLevel) && (
