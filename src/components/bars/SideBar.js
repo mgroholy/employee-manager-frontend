@@ -1,19 +1,26 @@
-import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Add from "@material-ui/icons/Add";
-import AccountTree from "@material-ui/icons/AccountTree";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import WorkIcon from "@material-ui/icons/Work";
-import Divider from "@material-ui/core/Divider";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import {
+  Drawer,
+  Toolbar,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@material-ui/core";
+import {
+  Add,
+  AccountTree,
+  AccountCircle,
+  ExitToApp,
+  VerifiedUser,
+  Work,
+} from "@material-ui/icons/";
+import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "../Security/UserContext";
+import PopUp from "./PopUp";
 
 const drawerWidth = 250;
 
@@ -37,7 +44,24 @@ const useStyles = makeStyles(() => ({
 
 const SideBar = () => {
   const classes = useStyles();
-  const { user, roles } = useContext(UserContext);
+  const { user, setUser, roles, setRoles } = useContext(UserContext);
+  const [error, setError] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await axios.get("http://localhost:8080/sign-out", {
+        withCredentials: true,
+      });
+      setUser("anonymousUser");
+      setRoles([]);
+    } catch (error) {
+      setError(true);
+    }
+  };
+
+  const handleClose = () => {
+    setError(false);
+  };
 
   return (
     <div>
@@ -53,9 +77,16 @@ const SideBar = () => {
           <List>
             <ListItem>
               <ListItemIcon style={{ color: "white" }}>
-                <ExitToAppIcon />
+                <VerifiedUser />
               </ListItemIcon>
               <ListItemText primary={user} />
+            </ListItem>
+
+            <ListItem button onClick={handleLogout}>
+              <ListItemIcon style={{ color: "white" }}>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText primary={"Logout"} />
             </ListItem>
 
             <Divider style={{ backgroundColor: "white" }} />
@@ -104,13 +135,14 @@ const SideBar = () => {
               activeClassName={classes.active}
             >
               <ListItemIcon style={{ color: "white" }}>
-                <WorkIcon />
+                <Work />
               </ListItemIcon>
               <ListItemText primary={"Positions"} />
             </ListItem>
           </List>
         </div>
       </Drawer>
+      <PopUp open={error} handleClose={handleClose} />
     </div>
   );
 };
