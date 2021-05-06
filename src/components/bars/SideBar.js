@@ -16,6 +16,7 @@ import {
   AccountCircle,
   ExitToApp,
   VerifiedUser,
+  Work,
 } from "@material-ui/icons/";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "../Security/UserContext";
@@ -126,6 +127,17 @@ const SideBar = () => {
                 <AccountTree />
               </ListItemIcon>
               <ListItemText primary={"Departments"} />
+            </ListItem>
+            <ListItem
+              button
+              component={NavLink}
+              to="/positions"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <Work />
+              </ListItemIcon>
+              <ListItemText primary={"Positions"} />
             </ListItem>
           </List>
         </div>

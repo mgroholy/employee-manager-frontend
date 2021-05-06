@@ -9,12 +9,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const AddDepartment = ({ fetchDepartments }) => {
+const AddToList = ({ fetchData, apiUrl }) => {
   const classes = useStyles();
 
-  const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
-
-  const [department, setDepartment] = useState({ name: "" });
+  const [inputData, setInputData] = useState({ name: "" });
   const [error, setError] = useState("");
   const [activeForm, setActiveForm] = useState(false);
 
@@ -23,17 +21,15 @@ const AddDepartment = ({ fetchDepartments }) => {
   };
 
   const sendDepartment = async () => {
-    if (department.name !== "") {
+    if (inputData.name !== "") {
       try {
-        const response = await axios.post(
-          DEPARTMENTS_REST_API_URL,
-          department,
-          { withCredentials: true }
-        );
+        const response = await axios.post(apiUrl, inputData, {
+          withCredentials: true,
+        });
         console.log(response);
-        fetchDepartments();
+        fetchData();
         toggleActiveForm();
-        setDepartment({ name: "" });
+        setInputData({ name: "" });
       } catch (error) {
         setError(error.response.data.message);
       }
@@ -50,13 +46,13 @@ const AddDepartment = ({ fetchDepartments }) => {
             <TextField
               margin={"normal"}
               id="outlined-basic"
-              label="Department name:"
+              label="Name:"
               variant="outlined"
               required={true}
-              value={department.name}
+              value={inputData.name}
               onChange={(event) => {
                 setError("");
-                setDepartment({ ...department, name: event.target.value });
+                setInputData({ ...inputData, name: event.target.value });
               }}
               helperText={error}
               error={error !== ""}
@@ -87,7 +83,7 @@ const AddDepartment = ({ fetchDepartments }) => {
             color="secondary"
             onClick={() => toggleActiveForm()}
           >
-            Add Department
+            Add
           </Button>
         </>
       )}
@@ -95,4 +91,4 @@ const AddDepartment = ({ fetchDepartments }) => {
   );
 };
 
-export default AddDepartment;
+export default AddToList;
