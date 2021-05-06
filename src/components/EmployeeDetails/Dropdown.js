@@ -58,7 +58,7 @@ const Dropdown = (props) => {
       <InputLabel id="dropdown" ref={labelRef}>
         {label}
       </InputLabel>
-      <Select labelId="dropdown" labelWidth={labelWidth}>
+      <Select labelId="dropdown" labelWidth={labelWidth} defaultValue="">
         {data.map((item, index) => (
           <MenuItem
             onClick={props.onDropdownClick}
