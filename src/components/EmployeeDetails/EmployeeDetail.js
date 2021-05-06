@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import EmployeeDetailHeader from "./EmployeeDetailHeader";
 import Dropdown from "./Dropdown";
+import { UserContext } from "../Security/UserContext";
 import ConfirmModal from "../FeedbackModal/ConfirmModal";
 
 const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
@@ -45,6 +46,7 @@ const EmployeeDetail = () => {
   const history = useHistory();
   const classes = useStyles();
   const { id } = useParams();
+  const { roles } = useContext(UserContext);
   const [employee, setEmployee] = useState({});
   const [isError, setIsError] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
@@ -229,7 +231,10 @@ const EmployeeDetail = () => {
         {employeeAttributes.map((attribute, index) => (
           <Accordion key={index}>
             <AccordionSummary
-              expandIcon={isModifiableField(attribute) ? <Update /> : <></>}
+              expandIcon={
+                isModifiableField(attribute) &&
+                roles.includes("SUPERVISOR") && <Update />
+              }
             >
               <Typography className={classes.attributeName}>
                 {attribute}
@@ -241,7 +246,7 @@ const EmployeeDetail = () => {
               </Typography>
             </AccordionSummary>
 
-            {isModifiableField(attribute) ? (
+            {isModifiableField(attribute) && roles.includes("SUPERVISOR") && (
               <AccordionDetails>
                 {isSpecialField(attribute) ? (
                   renderSpecialUpdateField(attribute)
@@ -261,8 +266,6 @@ const EmployeeDetail = () => {
                   />
                 )}
               </AccordionDetails>
-            ) : (
-              <></>
             )}
           </Accordion>
         ))}

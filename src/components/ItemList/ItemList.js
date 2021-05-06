@@ -11,8 +11,9 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ConfirmModal from "../FeedbackModal/ConfirmModal";
+import { UserContext } from "../Security/UserContext";
 import AddToList from "./AddToList";
 
 const useStyles = makeStyles(() => ({
@@ -36,6 +37,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ItemList = ({ apiUrl, name }) => {
+  const { roles } = useContext(UserContext);
+
+  const requiredLevel = name === "Department" ? "ADMIN" : "SUPERVISOR";
+
   const [data, setData] = useState([]);
 
   const [dialogContent, setDialogContent] = useState("");
@@ -113,11 +118,13 @@ const ItemList = ({ apiUrl, name }) => {
                 </TableCell>
               </TableRow>
             ))}
-            <TableRow>
-              <TableCell>
-                <AddToList fetchData={fetchData} apiUrl={apiUrl} />
-              </TableCell>
-            </TableRow>
+            {roles.includes(requiredLevel) && (
+              <TableRow>
+                <TableCell>
+                  <AddToList fetchData={fetchData} apiUrl={apiUrl} />
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

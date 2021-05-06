@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
 
 const SideBar = () => {
   const classes = useStyles();
-  const { user } = useContext(UserContext);
+  const { user, roles } = useContext(UserContext);
 
   return (
     <div>
@@ -58,6 +58,8 @@ const SideBar = () => {
               <ListItemText primary={user} />
             </ListItem>
 
+            <Divider style={{ backgroundColor: "white" }} />
+
             <ListItem
               button
               component={NavLink}
@@ -70,19 +72,19 @@ const SideBar = () => {
               <ListItemText primary={"Employees"} />
             </ListItem>
 
-            <ListItem
-              button
-              component={NavLink}
-              to="/add-employee"
-              activeClassName={classes.active}
-            >
-              <ListItemIcon style={{ color: "white" }}>
-                <Add />
-              </ListItemIcon>
-              <ListItemText primary={"Add new employee"} />
-            </ListItem>
-
-            <Divider style={{ backgroundColor: "white" }} />
+            {roles.includes("ADMIN") && (
+              <ListItem
+                button
+                component={NavLink}
+                to="/add-employee"
+                activeClassName={classes.active}
+              >
+                <ListItemIcon style={{ color: "white" }}>
+                  <Add />
+                </ListItemIcon>
+                <ListItemText primary={"Add new employee"} />
+              </ListItem>
+            )}
 
             <ListItem
               button
