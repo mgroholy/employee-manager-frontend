@@ -14,6 +14,7 @@ import { UserContext } from "./components/Security/UserContext";
 import PrivateRoute from "./components/Security/PrivateRoute";
 import CurrentUser from "./components/Security/CurrentUser";
 import NotFound from "./components/NotFound";
+import PositionList from "./components/PositionList/PositionList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,7 @@ function App() {
               path="/departments"
               component={DepartmentList}
             />
+            <PrivateRoute exact path="/positions" component={PositionList} />
             <Route exact path="/sign-in" component={Login} />
             <Route path="*" component={NotFound} />
           </Switch>

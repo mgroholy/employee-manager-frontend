@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import {
@@ -16,9 +16,11 @@ import {
   AccountCircle,
   ExitToApp,
   VerifiedUser,
+  Work,
 } from "@material-ui/icons/";
 import { makeStyles } from "@material-ui/core/styles";
 import { UserContext } from "../Security/UserContext";
+import PopUp from "./PopUp";
 
 const drawerWidth = 250;
 
@@ -43,6 +45,7 @@ const useStyles = makeStyles(() => ({
 const SideBar = () => {
   const classes = useStyles();
   const { user, setUser, roles, setRoles } = useContext(UserContext);
+  const [error, setError] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -52,8 +55,12 @@ const SideBar = () => {
       setUser("anonymousUser");
       setRoles([]);
     } catch (error) {
-      // TODO: display error message
+      setError(true);
     }
+  };
+
+  const handleClose = () => {
+    setError(false);
   };
 
   return (
@@ -125,9 +132,21 @@ const SideBar = () => {
               </ListItemIcon>
               <ListItemText primary={"Departments"} />
             </ListItem>
+            <ListItem
+              button
+              component={NavLink}
+              to="/positions"
+              activeClassName={classes.active}
+            >
+              <ListItemIcon style={{ color: "white" }}>
+                <Work />
+              </ListItemIcon>
+              <ListItemText primary={"Positions"} />
+            </ListItem>
           </List>
         </div>
       </Drawer>
+      <PopUp open={error} handleClose={handleClose} />
     </div>
   );
 };
