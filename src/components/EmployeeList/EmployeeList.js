@@ -43,7 +43,7 @@ const EmployeeList = () => {
   const [error, setError] = useState("");
   const [radioOption, setRadioOption] = useState("Name");
   const [departmentOption, setDepartmentOption] = useState("all");
-  const [showInactive, setShowInactive] = useState(false);
+  const [showInactive, setShowInactive] = useState(true);
 
   const classes = useStyles();
 
