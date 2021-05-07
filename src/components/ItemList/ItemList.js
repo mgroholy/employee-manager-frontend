@@ -86,7 +86,7 @@ const ItemList = ({ apiUrl, name }) => {
           <TableHead>
             <TableRow className={classes.header}>
               <TableCell className={classes.headerCell}>
-                {`${name} name:`}
+                {`${name} name`}
               </TableCell>
               <TableCell className={classes.headerCell}>
                 Number of Employees
