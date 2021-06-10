@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+<img alt="spring boot logo" align="left" src="https://cdn.freelogovectors.net/wp-content/uploads/2018/12/react_logo.png" width="75">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Employee Management System  
 
-## Available Scripts
+## Introduction
+<img alt="spring boot logo" align="left" src="https://coursereport-s3-production.global.ssl.fastly.net/uploads/school/logo/589/original/codecool-logo-symbol.png" width="20">
 
-In the project directory, you can run:
+This is a **Codecool** team project created during the last module of the school. Its aim was to practise REST APIs: fetch data from the backend API using React. The contributors are [Máté Groholy](https://www.linkedin.com/in/mgroholy/) and [Kriszti Tóth](https://www.linkedin.com/in/kriszti-toth/).
 
-### `npm start`
+The application provides a secure way to store and manage employee details as well as related positions and departments. Users can take advantage of different features depending on their clearance level.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The **backend** part of the project can be found [here](https://github.com/mgroholy/employee-manager-backend). The app has been deployed with the help of Heroku and Netlify: ```TODO```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technologies
+✓ React   
+✓ Axios    
+✓ Material UI  
 
-### `npm test`
+## Features
+AUTHENTICATION
+- Registration for employees only
+- Login / logout
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
+AUTHORIZATION
 
-### `npm run build`
+3 clearance levels: USER - SUPERVISOR - ADMIN
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Users only have access to view the page content.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Employee: can be modified by supervisors but can only be added / deleted by admins   
+- Department: can only be added / deleted by admins  
+- Position: can be added / deleted by supervisors and admins
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
+EMPLOYEES
++ List all employees
++ Filter by department, status, name, email and ID
++ Add employee details with input validation
++ Update employee details with input validation
++ Deactivate terminated employee
++ Delete after confirmation
+---
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+DEPARTMENTS / POSITIONS
++ List
++ Add
++ Delete
