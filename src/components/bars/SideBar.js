@@ -49,7 +49,7 @@ const SideBar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get("http://localhost:8080/sign-out", {
+      await axios.get(process.env.REACT_APP_LOGOUT_URL, {
         withCredentials: true,
       });
       setUser("anonymousUser");

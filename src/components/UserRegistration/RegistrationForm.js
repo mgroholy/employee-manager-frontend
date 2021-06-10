@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-const USER_REST_API_URL = "http://localhost:8080/sign-up";
+const USER_REST_API_URL = process.env.REACT_APP_SIGNUP_URL;
 
 const useStyles = makeStyles((theme) => ({
   root: {

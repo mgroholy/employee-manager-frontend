@@ -16,7 +16,7 @@ import Dropdown from "./Dropdown";
 import { UserContext } from "../Security/UserContext";
 import ConfirmModal from "../FeedbackModal/ConfirmModal";
 
-const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
+const EMPLOYEE_REST_API_URL = process.env.REACT_APP_EMPLOYEE_URL;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,7 +72,7 @@ const EmployeeDetail = () => {
     const fetchEmployee = async () => {
       setIsError(false);
       try {
-        const response = await axios.get(EMPLOYEE_REST_API_URL + id, {
+        const response = await axios.get(EMPLOYEE_REST_API_URL + "/" + id, {
           withCredentials: true,
         });
         setEmployee(response.data);
@@ -98,7 +98,7 @@ const EmployeeDetail = () => {
   };
 
   const sendUpdate = async (attribute, data) => {
-    const url = EMPLOYEE_REST_API_URL + id + "/partial-update";
+    const url = EMPLOYEE_REST_API_URL + "/" + id + "/partial-update";
 
     try {
       const update = getFormattedData(attribute, data);

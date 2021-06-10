@@ -11,7 +11,7 @@ import { Archive } from "@material-ui/icons";
 import { UserContext } from "../Security/UserContext";
 import ConfirmModal from "../FeedbackModal/ConfirmModal";
 
-const EMPLOYEE_REST_API_URL = "http://localhost:8080/employees/";
+const EMPLOYEE_REST_API_URL = process.env.REACT_APP_EMPLOYEE_URL;
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -52,7 +52,7 @@ const EmployeeDetailHeader = (props) => {
   };
 
   const sendDelete = async () => {
-    const url = EMPLOYEE_REST_API_URL + props.employeeId + "/delete";
+    const url = EMPLOYEE_REST_API_URL + "/" + props.employeeId + "/delete";
     try {
       await axios.delete(url, { withCredentials: true });
       setDialogContent(

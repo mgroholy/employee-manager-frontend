@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
 
 const Login = () => {
   const classes = useStyles();
-  const SIGN_IN_REST_API_URL = "http://localhost:8080/sign-in";
+  const SIGN_IN_REST_API_URL = process.env.REACT_APP_LOGIN_URL;
 
   const history = useHistory();
   const { setUser, setRoles } = useContext(UserContext);

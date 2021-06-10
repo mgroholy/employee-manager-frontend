@@ -15,9 +15,10 @@ import CustomTextField from "./CustomTextField";
 import Alert from "@material-ui/lab/Alert";
 
 const AddEmployee = () => {
-  const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
-  const LEVELS_REST_API_URL = "http://localhost:8080/levels";
-  const POSITIONS_REST_API_URL = "http://localhost:8080/positions";
+  const EMPLOYEES_REST_API_URL = process.env.REACT_APP_EMPLOYEE_URL;
+  const DEPARTMENTS_REST_API_URL = process.env.REACT_APP_DEPARTMENT_URL;
+  const LEVELS_REST_API_URL = process.env.REACT_APP_LEVEL_URL;
+  const POSITIONS_REST_API_URL = process.env.REACT_APP_POSITION_URL;
 
   const { roles } = useContext(UserContext);
 
@@ -128,11 +129,9 @@ const AddEmployee = () => {
 
   const sendRequest = async (employee) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/employees",
-        employee,
-        { withCredentials: true }
-      );
+      const response = await axios.post(EMPLOYEES_REST_API_URL, employee, {
+        withCredentials: true,
+      });
       history.push(`/employees/${response.data.ID}`);
     } catch (apiError) {
       setError({ ...error, email: apiError.response.data.message });

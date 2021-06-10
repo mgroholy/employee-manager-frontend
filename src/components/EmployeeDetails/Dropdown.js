@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
-const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
-const LEVELS_REST_API_URL = "http://localhost:8080/levels";
-const STATUSES_REST_API_URL = "http://localhost:8080/statuses";
-const POSITIONS_REST_API_URL = "http://localhost:8080/positions";
+const DEPARTMENTS_REST_API_URL = process.env.REACT_APP_DEPARTMENT_URL;
+const LEVELS_REST_API_URL = process.env.REACT_APP_LEVEL_URL;
+const STATUSES_REST_API_URL = process.env.REACT_APP_STATUS_URL;
+const POSITIONS_REST_API_URL = process.env.REACT_APP_POSITION_URL;
 
 const Dropdown = (props) => {
   const [data, setData] = useState([]);

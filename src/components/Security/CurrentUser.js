@@ -8,7 +8,7 @@ export default function CurrentUser() {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/user", {
+      const response = await axios.get(process.env.REACT_APP_USER_URL, {
         withCredentials: true,
       });
       setUser(response.data.user);

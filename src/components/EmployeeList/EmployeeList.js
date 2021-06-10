@@ -14,8 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import EmployeeFilter from "./EmployeeFilter";
 
-const EMPLOYEES_REST_API_URL = "http://localhost:8080";
-const DEPARTMENTS_REST_API_URL = "http://localhost:8080/departments";
+const EMPLOYEES_REST_API_URL = process.env.REACT_APP_EMPLOYEE_URL;
+const DEPARTMENTS_REST_API_URL = process.env.REACT_APP_DEPARTMENT_URL;
 
 const useStyles = makeStyles(() => ({
   header: {
@@ -64,12 +64,11 @@ const EmployeeList = () => {
   };
 
   const filterByInput = async () => {
-    const url = `${EMPLOYEES_REST_API_URL}/employees?${
+    const url = `${EMPLOYEES_REST_API_URL}?${
       userInput !== ""
         ? `${radioOption.toLowerCase()}=${userInput}`
         : `department=${departmentOption}`
     }${showInactive === true ? `&showInactive=${showInactive}` : ""}`;
-    console.log(url);
     try {
       const response = await axios.get(url, { withCredentials: true });
       setEmployees(response.data);
